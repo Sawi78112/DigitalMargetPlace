@@ -5,9 +5,7 @@ import { getUser } from '$modules/auth';
 
 export const load: PageLoad = async () => {
 	const user = await getUser();
-	if (user) {
-		redirect(303, '/home');
-	}
+	if (!user) redirect(303, '/login');
 
 	return {};
 };

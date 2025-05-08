@@ -7,16 +7,15 @@
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { type DefaultError, createMutation } from '@tanstack/svelte-query';
-
-	import { type AuthResults, type LoginSchema, login, loginSchema } from '..';
+	import { type AuthResults, type RegisterSchema, register, registerSchema } from '..';
 	import { invalidateAll } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
 	import { setAuthToken } from '$lib/api';
 
-	const loginMutation = createMutation<AuthResults, DefaultError, LoginSchema>({
-		mutationKey: ['login'],
-		mutationFn: login,
+	const registerMutation = createMutation<AuthResults, DefaultError, RegisterSchema>({
+		mutationKey: ['register'],
+		mutationFn: register,
 		onSuccess: (data) => {
 			const { token } = data;
 			if (token) {
@@ -29,13 +28,15 @@
 		}
 	});
 
-	const form = superForm(defaults(zod(loginSchema)), {
+	const form = superForm(defaults(zod(registerSchema)), {
 		SPA: true,
-		validators: zodClient(loginSchema),
+		validators: zodClient(registerSchema),
 		resetForm: false,
 		onUpdate({ form }) {
 			if (form.valid) {
-				$loginMutation.mutate(form.data);
+				const { confirm_password, ...data } = form.data;
+
+				$registerMutation.mutate(data);
 			}
 		}
 	});
@@ -54,6 +55,7 @@
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
+
 		<Form.Field {form} name="password">
 			<Form.Control>
 				{#snippet children({ props })}
@@ -64,27 +66,39 @@
 			<Form.FieldErrors />
 		</Form.Field>
 
-		{#if $loginMutation.isPaused}
+		<Form.Field {form} name="confirm_password">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Confirm Password</Form.Label>
+					<Input {...props} type="password" bind:value={$formData.confirm_password} />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		{#if $registerMutation.isPaused}
 			<Alert.Root variant="destructive">
 				<CircleAlert class="h-4 w-4" />
 				<Alert.Title>You are offline</Alert.Title>
 				<Alert.Description>Please connect to the internet.</Alert.Description>
 			</Alert.Root>
 		{/if}
-		{#if $loginMutation.isError}
+		{#if $registerMutation.isError}
 			<Alert.Root variant="destructive">
 				<CircleAlert class="h-4 w-4" />
-				<Alert.Title>Email or password is incorrect</Alert.Title>
+				<Alert.Title>Details Incorrect</Alert.Title>
 			</Alert.Root>
 		{/if}
 	</div>
-	<Form.Button class="w-full" disabled={$loginMutation.isPending || $loginMutation.isPaused}>
-		{#if $loginMutation.isPending || $loginMutation.isPaused}
+
+	<Form.Button class="w-full" disabled={$registerMutation.isPending || $registerMutation.isPaused}>
+		{#if $registerMutation.isPending || $registerMutation.isPaused}
 			<LoaderIcon class="mr-1 size-4 animate-spin" />
 		{/if}
-		Login
+		Register
 	</Form.Button>
 </form>
+
 <div class="relative">
 	<div class="absolute inset-0 flex items-center">
 		<span class="w-full border-t"></span>
@@ -93,7 +107,6 @@
 		<span class="bg-background px-2 text-muted-foreground"> Or continue with </span>
 	</div>
 </div>
-
 <Button variant="outline" type="button">
 	<!-- {#if $registerMutation.isPending || $registerMutation.isPaused}
 		<LoaderIcon class="mr-1 size-4 animate-spin" />
