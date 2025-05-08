@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@fontsource-variable/inter';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 
@@ -11,7 +12,7 @@
 </script>
 
 <svelte:head>
-	<title>1Bataan READi</title>
+	<title>Digital Market Place</title>
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>

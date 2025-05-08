@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/inter':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@tanstack/svelte-query':
         specifier: ^5.75.0
         version: 5.75.0(svelte@5.28.2)
@@ -482,6 +485,9 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@fontsource-variable/inter@5.2.5':
+    resolution: {integrity: sha512-TrWffUAFOnT8zroE9YmGybagoOgM/HjRqMQ8k9R0vVgXlnUh/vnpbGPAS/Caz1KIlOPnPGh6fvJbb7DHbFCncA==}
 
   '@gcornut/valibot-json-schema@0.31.0':
     resolution: {integrity: sha512-3xGptCurm23e7nuPQkdrE5rEs1FeTPHhAUsBuwwqG4/YeZLwJOoYZv+fmsppUEfo5y9lzUwNQrNqLS/q7HMc7g==}
@@ -3561,6 +3567,8 @@ snapshots:
       '@floating-ui/utils': 0.2.9
 
   '@floating-ui/utils@0.2.9': {}
+
+  '@fontsource-variable/inter@5.2.5': {}
 
   '@gcornut/valibot-json-schema@0.31.0':
     dependencies:
