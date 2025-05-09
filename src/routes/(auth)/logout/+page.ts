@@ -1,9 +1,8 @@
 import { redirect } from '@sveltejs/kit';
-
 import type { PageLoad } from './$types';
-import { removeAuthToken } from '$lib/api';
+import { auth } from '$lib/api';
 
 export const load: PageLoad = async () => {
-	removeAuthToken();
+	auth.clearToken();
 	redirect(303, '/login');
 };

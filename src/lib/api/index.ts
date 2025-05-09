@@ -1,30 +1,26 @@
-import axios, { type AxiosError, type AxiosResponse } from 'axios';
+// src/lib/api.ts
+import axios, { type AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 
+import type { ApiError } from '$lib/types';
 import { dev } from '$app/environment';
 import { PUBLIC_API } from '$env/static/public';
 
-const TOKEN_KEY = 'token';
-const COOKIE_OPTIONS = {
-	secure: !dev,
-	sameSite: 'strict' as const,
-	httpOnly: false
-};
-
-type ApiError = {
-	message: string;
-	status: number;
-};
-
-type RequestConfig<TData> = {
-	method: 'get' | 'delete' | 'post' | 'put' | 'patch';
-	endpoint: string;
-	data?: TData;
+// ----------------------------
+// 1. Type Definitions
+// ----------------------------
+type ApiConfig = {
+	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+	url: string;
+	data?: unknown;
+	params?: Record<string, unknown>;
 	token?: string;
 };
 
-// Axios instance
-const instance = axios.create({
+// ----------------------------
+// 2. Axios Instance
+// ----------------------------
+const client = axios.create({
 	baseURL: PUBLIC_API,
 	timeout: 10000,
 	headers: {
@@ -32,104 +28,82 @@ const instance = axios.create({
 	}
 });
 
-instance.interceptors.request.use(
-	(config) => {
-		const token = Cookies.get(TOKEN_KEY);
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
-		}
-		return config;
-	},
-	(error) => Promise.reject(error)
-);
+// ----------------------------
+// 3. Request Interceptor (Auth)
+// ----------------------------
+client.interceptors.request.use((config) => {
+	const token = Cookies.get('token');
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+	return config;
+});
 
-instance.interceptors.response.use(
-	(response: AxiosResponse) => response,
+// ----------------------------
+// 4. Response Interceptor (Error Handling)
+// ----------------------------
+client.interceptors.response.use(
+	(response) => response,
 	(error: AxiosError) => {
+		// Handle 401 Unauthorized
 		if (error.response?.status === 401) {
-			Cookies.remove(TOKEN_KEY);
+			Cookies.remove('token');
 		}
-		return Promise.reject(error);
+
+		// Transform to ApiError format
+		const apiError: ApiError = {
+			message: 'An error occurred',
+			status: error.response?.status || 500
+		};
+
+		if (error.response?.data) {
+			const data = error.response.data as Record<string, unknown>;
+			apiError.message = (data.error as string) || apiError.message;
+			apiError.errors = data.errors as string[];
+			apiError.fieldErrors = data.field_errors as Record<string, string>;
+		}
+
+		return Promise.reject(apiError);
 	}
 );
 
-async function req<TResponse>({
-	method,
-	endpoint,
-	data,
-	token
-}: RequestConfig<unknown>): Promise<TResponse> {
-	try {
-		const headers: Record<string, string> = {};
-		if (token) {
-			headers.Authorization = `${token}`;
-		}
+// ----------------------------
+// 5. Core API Function
+// ----------------------------
+export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
+	const { method, url, data, params, token } = config;
 
-		const response = await instance({
+	// Use explicit token if provided
+	const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+	try {
+		const response = await client.request<TResponse>({
 			method,
-			url: endpoint,
+			url,
 			data,
+			params,
 			headers
 		});
 
-		return response.data as TResponse;
+		return response.data;
 	} catch (error) {
-		if (axios.isAxiosError(error)) {
-			const apiError: ApiError = {
-				message: error.response?.data?.message || 'An unexpected error occurred',
-				status: error.response?.status || 500
-			};
-			throw apiError;
-		}
-		throw new Error('An unexpected error occurred');
+		// Already transformed to ApiError by interceptor
+		// eslint-disable-next-line no-throw-literal
+		throw error as ApiError;
 	}
 }
 
-function setAuthToken(token: string): void {
-	Cookies.set(TOKEN_KEY, token, COOKIE_OPTIONS);
-}
-
-function getAuthToken(): string | undefined {
-	return Cookies.get(TOKEN_KEY);
-}
-
-function removeAuthToken(): void {
-	Cookies.remove(TOKEN_KEY);
-}
-
-const api = {
-	get: <TResponse>(endpoint: string, token?: string) =>
-		req<TResponse>({ method: 'get', endpoint, token }),
-
-	delete: <TResponse>(endpoint: string, token?: string) =>
-		req<TResponse>({ method: 'delete', endpoint, token }),
-
-	post: <TResponse>(endpoint: string, data?: unknown, token?: string) =>
-		req<TResponse>({ method: 'post', endpoint, data, token }),
-
-	put: <TResponse>(endpoint: string, data?: unknown, token?: string) =>
-		req<TResponse>({ method: 'put', endpoint, data, token }),
-
-	patch: <TResponse>(endpoint: string, data?: unknown, token?: string) =>
-		req<TResponse>({ method: 'patch', endpoint, data, token }),
-
-	auth: {
-		setToken: setAuthToken,
-		getToken: getAuthToken,
-		removeToken: removeAuthToken
-	}
+// ----------------------------
+// 6. Auth Utilities
+// ----------------------------
+export const auth = {
+	setToken: (token: string, expires?: Date) =>
+		Cookies.set('token', token, {
+			secure: !dev,
+			sameSite: 'strict',
+			httpOnly: false,
+			expires
+		}),
+	getToken: () => Cookies.get('token'),
+	clearToken: () => Cookies.remove('token')
 };
-
-function delay<TData>(data: TData) {
-	// eslint-disable-next-line no-console
-	if (dev) console.log('delay', data);
-	return new Promise((resolve) => setTimeout(resolve, 1000));
-}
-
-function pass<TData>(data: TData) {
-	// eslint-disable-next-line no-console
-	if (dev) console.log('pass', data);
-	return new Promise((resolve) => setTimeout(resolve, 0));
-}
-
-export { api, getAuthToken, removeAuthToken, setAuthToken, delay, pass };

@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { type DefaultError, createMutation } from '@tanstack/svelte-query';
-	import { CircleAlert, LoaderIcon } from 'lucide-svelte';
+	import { CircleAlert, Eye, LoaderIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
+	import { createMutation } from '@tanstack/svelte-query';
 
-	import { type AuthResults, type RegisterSchema, register, registerSchema } from '..';
+	import { register, registerSchema } from '..';
+
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Icons } from '$lib/components/icons';
-	import { invalidateAll } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
-	import { setAuthToken } from '$lib/api';
+	import { auth } from '$lib/api';
 
-	const registerMutation = createMutation<AuthResults, DefaultError, RegisterSchema>({
+	const registerMutation = createMutation({
 		mutationKey: ['register'],
 		mutationFn: register,
 		onSuccess: (data) => {
-			const { token } = data;
-			if (token) {
-				setAuthToken(token);
-				invalidateAll();
-			}
+			const { token, token_expiry } = data;
+			auth.setToken(token, new Date(token_expiry));
+			goto('/u');
 		}
 	});
 
@@ -31,7 +30,7 @@
 		resetForm: false,
 		onUpdate({ form }) {
 			if (form.valid) {
-				const { confirm_password: _, ...data } = form.data;
+				const { confirmPassword, ...data } = form.data;
 
 				$registerMutation.mutate(data);
 			}
@@ -39,6 +38,9 @@
 	});
 
 	const { form: formData, enhance } = form;
+
+	let showPassword = false;
+	let showConfirmPassword = false;
 </script>
 
 <form method="POST" use:enhance class="w-full space-y-4">
@@ -57,17 +59,53 @@
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Password</Form.Label>
-					<Input {...props} type="password" bind:value={$formData.password} />
+					<div class="relative">
+						<Input
+							{...props}
+							type={showPassword ? 'text' : 'password'}
+							bind:value={$formData.password}
+						/>
+						<button
+							type="button"
+							class="absolute inset-y-0 right-2 flex items-center"
+							on:click={() => (showPassword = !showPassword)}
+							tabindex="-1"
+						>
+							<Eye
+								class="size-4 transition-colors duration-200 {showPassword
+									? 'text-foreground'
+									: 'text-muted-foreground'}"
+							/>
+						</button>
+					</div>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
-		<Form.Field {form} name="confirm_password">
+		<Form.Field {form} name="confirmPassword">
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Confirm Password</Form.Label>
-					<Input {...props} type="password" bind:value={$formData.confirm_password} />
+					<div class="relative">
+						<Input
+							{...props}
+							type={showConfirmPassword ? 'text' : 'password'}
+							bind:value={$formData.confirmPassword}
+						/>
+						<button
+							type="button"
+							class="absolute inset-y-0 right-2 flex items-center"
+							on:click={() => (showConfirmPassword = !showConfirmPassword)}
+							tabindex="-1"
+						>
+							<Eye
+								class="size-4 transition-colors duration-200 {showConfirmPassword
+									? 'text-foreground'
+									: 'text-muted-foreground'}"
+							/>
+						</button>
+					</div>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -75,14 +113,14 @@
 
 		{#if $registerMutation.isPaused}
 			<Alert.Root variant="destructive">
-				<CircleAlert class="h-4 w-4" />
+				<CircleAlert class="size-4" />
 				<Alert.Title>You are offline</Alert.Title>
 				<Alert.Description>Please connect to the internet.</Alert.Description>
 			</Alert.Root>
 		{/if}
 		{#if $registerMutation.isError}
 			<Alert.Root variant="destructive">
-				<CircleAlert class="h-4 w-4" />
+				<CircleAlert class="size-4" />
 				<Alert.Title>Details Incorrect</Alert.Title>
 			</Alert.Root>
 		{/if}

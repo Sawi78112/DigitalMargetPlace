@@ -11,12 +11,42 @@ export type LoginSchema = Infer<typeof loginSchema>;
 export const registerSchema = z
 	.object({
 		email: z.string().email('Type your email here'),
-		password: z.string().min(8, 'Minimum of 8 characters'),
-		confirm_password: z.string().min(8, 'Minimum of 8 characters').optional()
+		password: z.string().min(8, 'Password must be at least 8 characters long'),
+		confirmPassword: z.string().optional()
 	})
-	.refine((data) => data.password === data.confirm_password, {
+	.refine((data) => data.password === data.confirmPassword, {
 		message: 'Passwords do not match',
-		path: ['confirm_password']
+		path: ['confirmPassword']
 	});
 
 export type RegisterSchema = Infer<typeof registerSchema>;
+
+export const forgotPasswordRequestSchema = z.object({
+	email: z.string().email({ message: 'Please enter a valid email' })
+});
+
+export type ForgotPasswordRequestSchema = Infer<typeof forgotPasswordRequestSchema>;
+
+export const forgotPasswordSchema = z
+	.object({
+		code: z.string().min(6, {
+			message: 'OTP Code must be at least 6 characters'
+		}),
+
+		password: z.string().min(8, 'Password must be at least 8 characters long'),
+		confirmPassword: z.string()
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords don't match",
+		path: ['confirmPassword']
+	});
+
+export type ForgotPasswordSchema = Infer<typeof forgotPasswordSchema>;
+
+export const emailConfirmationSchema = z.object({
+	code: z.string().min(6, {
+		message: 'Email Confirmation OTP must be at least 6 characters'
+	})
+});
+
+export type EmailConfirmationSchema = Infer<typeof emailConfirmationSchema>;

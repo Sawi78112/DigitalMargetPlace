@@ -1,27 +1,30 @@
 <script lang="ts">
-	import { CircleAlert, LoaderIcon } from 'lucide-svelte';
+	import { CircleAlert, Loader2Icon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
+	import { toast } from 'svelte-sonner';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { type DefaultError, createMutation } from '@tanstack/svelte-query';
+	import { createMutation } from '@tanstack/svelte-query';
 
-	import { type AuthResults, type LoginSchema, login, loginSchema } from '..';
+	import { login, loginSchema } from '..';
+
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Icons } from '$lib/components/icons';
-	import { invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
-	import { setAuthToken } from '$lib/api';
+	import { auth } from '$lib/api';
 
-	const loginMutation = createMutation<AuthResults, DefaultError, LoginSchema>({
+	const loginMutation = createMutation({
 		mutationKey: ['login'],
 		mutationFn: login,
 		onSuccess: (data) => {
-			const { token } = data;
-			if (token) {
-				setAuthToken(token);
-				invalidateAll();
-			}
+			const { token, token_expiry } = data;
+			auth.setToken(token, new Date(token_expiry));
+			goto('/home');
+		},
+		onError: () => {
+			toast.error('Email or Password is incorrect');
 		}
 	});
 
@@ -62,25 +65,46 @@
 
 		{#if $loginMutation.isPaused}
 			<Alert.Root variant="destructive">
-				<CircleAlert class="h-4 w-4" />
+				<CircleAlert class="size-4" />
 				<Alert.Title>You are offline</Alert.Title>
 				<Alert.Description>Please connect to the internet.</Alert.Description>
 			</Alert.Root>
 		{/if}
 		{#if $loginMutation.isError}
 			<Alert.Root variant="destructive">
-				<CircleAlert class="h-4 w-4" />
+				<CircleAlert class="size-4" />
 				<Alert.Title>Email or password is incorrect</Alert.Title>
 			</Alert.Root>
 		{/if}
 	</div>
-	<Form.Button class="w-full" disabled={$loginMutation.isPending || $loginMutation.isPaused}>
+	<!-- <Form.Button class="w-full" disabled={$loginMutation.isPending || $loginMutation.isPaused}>
 		{#if $loginMutation.isPending || $loginMutation.isPaused}
 			<LoaderIcon class="mr-1 size-4 animate-spin" />
 		{/if}
 		Login
-	</Form.Button>
+	</Form.Button> -->
+
+	<div>
+		<Button href="/forgot-password/request" variant="link" class="h-0 p-0 text-gray-500 underline">
+			Forgot password?
+		</Button>
+	</div>
+
+	<div class="mt-auto flex flex-col space-y-4 py-4">
+		<Form.Button disabled={$loginMutation.isPending}>
+			{#if $loginMutation.isPending}
+				<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
+				Logging in...
+			{:else}
+				Login
+			{/if}
+		</Form.Button>
+		<Button href="/register" variant="outline" class="border-2  border-primary">
+			Don't have an account?
+		</Button>
+	</div>
 </form>
+
 <div class="relative">
 	<div class="absolute inset-0 flex items-center">
 		<span class="w-full border-t"></span>

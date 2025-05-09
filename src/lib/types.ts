@@ -5,8 +5,19 @@ export type ApiError = {
 	fieldErrors?: Record<string, string>;
 };
 
+export type AuthResult = {
+	token: string;
+	token_expiry: string;
+};
+
 export type User = {
+	id: string;
 	email: string;
+	verified_at?: string;
 	created_at: string;
 	updated_at: string;
+};
+
+export type ForgotPasswordRequestResult = {
+	id: string;
 };
