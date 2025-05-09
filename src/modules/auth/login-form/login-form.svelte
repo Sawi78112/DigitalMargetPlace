@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
-	import { cn } from '$lib/utils.js';
-	import Google from '$lib/components/icons/google.svelte';
 	import { CircleAlert, LoaderIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { type DefaultError, createMutation } from '@tanstack/svelte-query';
 
 	import { type AuthResults, type LoginSchema, login, loginSchema } from '..';
+	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
+	import { Icons } from '$lib/components/icons';
 	import { invalidateAll } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
@@ -23,9 +22,6 @@
 				setAuthToken(token);
 				invalidateAll();
 			}
-		},
-		onError: ({ message }) => {
-			console.log(message);
 		}
 	});
 
@@ -95,10 +91,6 @@
 </div>
 
 <Button variant="outline" type="button">
-	<!-- {#if $registerMutation.isPending || $registerMutation.isPaused}
-		<LoaderIcon class="mr-1 size-4 animate-spin" />
-	{:else} -->
-	<Google class="mr-2 h-4 w-4" />
-	<!-- {/if} -->
+	<Icons.google class="mr-2 size-4" />
 	Google
 </Button>
