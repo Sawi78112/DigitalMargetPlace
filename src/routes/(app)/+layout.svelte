@@ -8,10 +8,9 @@
 	setCurrentUser(data.user);
 </script>
 
-<Sidebar.Provider>
+<Sidebar.Provider class="bg-gray-100 p-4">
 	<AppSidebar />
-	<main class="container">
-		<Sidebar.Trigger class="my-6" />
+	<main class="container bg-white">
 		{@render children?.()}
 	</main>
 </Sidebar.Provider>

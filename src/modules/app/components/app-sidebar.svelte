@@ -4,18 +4,22 @@
 	import * as Sidebar from '$lib/components/ui/sidebar';
 	import { getCurrentUser, urlRedirectForLoggedInUser } from '$modules/auth';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { cn } from '$lib/utils';
 
 	const { user } = getCurrentUser();
-	let currentLinks = $derived(links);
+	const currentPath = $derived(page.url.pathname);
 </script>
 
-<Sidebar.Root class="flex min-h-screen w-[240px] flex-col justify-between border-r bg-white">
+<Sidebar.Root
+	class="ml-4 mt-4 flex h-[calc(100vh-32px)] w-[240px] flex-col justify-between border-r bg-white"
+>
 	<Sidebar.Header class="px-4 pb-4 pt-6">
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton
 					onclick={() => goto(urlRedirectForLoggedInUser(user))}
-					class="text-lg font-bold text-muted-foreground"
+					class="text-muted-foreground text-lg font-bold"
 				>
 					LOGO
 				</Sidebar.MenuButton>
@@ -27,16 +31,19 @@
 		<Sidebar.Group>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu class="space-y-1">
-					{#each currentLinks as link (link.title)}
+					{#each links as link (link.title)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton
-								class="flex items-center gap-3 rounded-md px-4 py-2 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600"
-							>
+							<Sidebar.MenuButton>
 								{#snippet child({ props })}
 									<a
 										href={link.url}
 										{...props}
-										class="transition-colorshover:bg-blue-50 flex w-full items-center gap-3 rounded-full px-4 py-2 text-sm hover:text-blue-600"
+										class={cn(
+											'flex w-full items-center gap-3 rounded-full px-4 py-2 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600',
+											currentPath.startsWith(link.url)
+												? 'bg-blue-50 text-blue-600'
+												: 'text-gray-700'
+										)}
 									>
 										<link.icon class="h-5 w-5" />
 										<span>{link.title}</span>
