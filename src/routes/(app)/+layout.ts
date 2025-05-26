@@ -21,7 +21,30 @@ export const load: LayoutLoad = async ({ url }) => {
 
 	if (needVerification) redirect(303, '/u/email-confirmation');
 
+	const segments = pathname.split('/').filter(Boolean);
+	const lastSegment = segments[segments.length - 1] ?? '';
+	const titleMap: Record<string, string> = {
+		'': 'Dashboard',
+		home: 'Home',
+		products: 'Products',
+		collaborators: 'Collaborators',
+		checkout: 'Checkout',
+		emails: 'Emails',
+		workflows: 'Workflows',
+		sales: 'Sales',
+		analytics: 'Analytics',
+		payouts: 'Payouts',
+		library: 'Library',
+		settings: 'Settings',
+		help: 'Help'
+	};
+
+	const headerTitle =
+		titleMap[lastSegment] ??
+		lastSegment.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+
 	return {
-		user
+		user,
+		headerTitle
 	};
 };
