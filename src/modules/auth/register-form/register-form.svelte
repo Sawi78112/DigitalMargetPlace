@@ -30,7 +30,7 @@
 		resetForm: false,
 		onUpdate({ form }) {
 			if (form.valid) {
-				const { confirmPassword, ...data } = form.data;
+				const { confirmPassword: _, ...data } = form.data;
 
 				$registerMutation.mutate(data);
 			}
