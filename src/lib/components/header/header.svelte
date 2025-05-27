@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
 	import { ArrowLeftIcon } from 'lucide-svelte';
+	import { Button } from '$lib/components/ui/button';
 
 	export let title: string;
 </script>

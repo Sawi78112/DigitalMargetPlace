@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { BookOpen, Settings } from 'lucide-svelte';
+
 	import { links } from '..';
-	import * as Sidebar from '$lib/components/ui/sidebar';
+
 	import { getCurrentUser, urlRedirectForLoggedInUser } from '$modules/auth';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { cn } from '$lib/utils';
+	import * as Sidebar from '$lib/components/ui/sidebar';
 
 	const { user } = getCurrentUser();
 	const currentPath = $derived(page.url.pathname);
@@ -19,7 +21,7 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton
 					onclick={() => goto(urlRedirectForLoggedInUser(user))}
-					class="text-muted-foreground text-lg font-bold"
+					class="text-lg font-bold text-muted-foreground"
 				>
 					LOGO
 				</Sidebar.MenuButton>

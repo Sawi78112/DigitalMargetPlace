@@ -1,10 +1,9 @@
 <script lang="ts">
+	import { Plus } from 'lucide-svelte';
+
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
-	import { Plus } from 'lucide-svelte';
 </script>
 
 <Tabs.Root value="products">
@@ -20,7 +19,7 @@
 				<div class="flex flex-col items-center space-y-2 text-center">
 					<Button
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
-						href="/products/add"
+						href="/products/create-product"
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -31,7 +30,7 @@
 						effortlessly.
 					</p>
 
-					<Button href="/products/add">Add Products</Button>
+					<Button href="/products/create-product">Add Products</Button>
 				</div>
 			</Card.Content>
 		</Card.Root>
