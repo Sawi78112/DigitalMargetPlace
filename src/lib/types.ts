@@ -23,3 +23,15 @@ export type User = {
 export type ForgotPasswordRequestResult = {
 	id: string;
 };
+
+export type Product = {
+	id: string;
+	name: string;
+	description: string;
+	category_ids: string[];
+};
+
+export type Categories = {
+	name: string;
+	id: string;
+};
