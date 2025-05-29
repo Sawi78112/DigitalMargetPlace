@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { ProductForm } from '$modules/products/product-form';
+	import { NewProductModal } from '$modules/products/product-modal';
 </script>
 
-<ProductForm />
+<div class="space-y-5">
+	<div class="flex items-center justify-between">
+		<NewProductModal />
+	</div>
+</div>

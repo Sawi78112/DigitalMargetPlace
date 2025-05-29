@@ -10,11 +10,15 @@ export async function createProduct(data: NewProductSchema): Promise<Product> {
 	});
 }
 
-export async function updateProduct(data: UpdateProductSchema): Promise<Product> {
+export async function updateProduct(data: {
+	id: string;
+	product: UpdateProductSchema;
+}): Promise<Product> {
+	const { id, product } = data;
 	return api<Product>({
 		method: 'PUT',
-		url: `/products/${data.id}`,
-		data
+		url: `/products/${id}`,
+		data: product
 	});
 }
 

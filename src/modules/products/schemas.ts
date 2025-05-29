@@ -4,9 +4,7 @@ import type { Infer } from 'sveltekit-superforms';
 export const newProductSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	description: z.string().min(1, 'Description is required'),
-	category_ids: z
-		.array(z.string().uuid({ message: 'Invalid category ID' }))
-		.min(1, 'At least one category must be selected')
+	categories: z.array(z.string()).min(1)
 });
 
 export const updateProductSchema = newProductSchema.extend({

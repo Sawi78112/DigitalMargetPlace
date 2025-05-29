@@ -7,3 +7,10 @@ export async function getCategories(): Promise<Categories[]> {
 		url: '/categories'
 	});
 }
+
+export async function getUserProducts(): Promise<Product[]> {
+	return await api<Product[]>({
+		method: 'GET',
+		url: '/products'
+	});
+}
