@@ -1,9 +1,25 @@
 <script lang="ts">
 	import { Plus } from 'lucide-svelte';
+	import { derived } from 'svelte/store';
+	import { createQuery } from '@tanstack/svelte-query';
 
+	import { columns } from '$modules/products/user-product-table';
+
+	import { getUserProducts } from '$modules/products';
+	import { DataTable } from '$lib/components/tables';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+
+	const products = createQuery({
+		queryKey: ['product'],
+		queryFn: getUserProducts,
+		initialData: []
+	});
+
+	const sortedProducts = derived(products, ($products) =>
+		[...($products.data ?? [])].sort((a, b) => a.name.localeCompare(b.name))
+	);
 </script>
 
 <Tabs.Root value="products">
@@ -52,3 +68,7 @@
 		</Card.Root>
 	</Tabs.Content>
 </Tabs.Root>
+
+<div class="space-y-5">
+	<DataTable filterKey="name" data={$sortedProducts} {columns} />
+</div>
