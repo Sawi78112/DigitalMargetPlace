@@ -28,7 +28,7 @@ export type Product = {
 	id: string;
 	name: string;
 	description: string;
-	category_ids: string[];
+	categories: string[];
 };
 
 export type Categories = {
