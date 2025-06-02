@@ -1,14 +1,14 @@
 <script lang="ts" generics="TData, TValue">
 	import {
 		type ColumnDef,
-		type PaginationState,
 		type ColumnFiltersState,
+		type PaginationState,
 		getCoreRowModel,
-		getPaginationRowModel,
-		getFilteredRowModel
+		getFilteredRowModel,
+		getPaginationRowModel
 	} from '@tanstack/table-core';
 
-	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
+	import { FlexRender, createSvelteTable } from '$lib/components/ui/data-table';
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';

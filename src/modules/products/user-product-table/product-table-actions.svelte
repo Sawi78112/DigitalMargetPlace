@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Ellipsis from 'lucide-svelte/icons/ellipsis';
+
+	import { ProductTableDeleteAction, ProductTableEditAction, ProductTableViewAction } from '.';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import type { Product } from '$lib/types';
-	import { ProductTableDeleteAction, ProductTableEditAction, ProductTableViewAction } from '.';
 
 	type Props = {
 		product: Product;

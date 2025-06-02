@@ -3,8 +3,8 @@
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
 
-	import type { Product } from '$lib/types';
 	import { deleteProduct } from '..';
+	import type { Product } from '$lib/types';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 
