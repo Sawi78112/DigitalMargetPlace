@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Ellipsis from 'lucide-svelte/icons/ellipsis';
 
-	import { ProductTableDeleteAction, ProductTableEditAction, ProductTableViewAction } from '.';
+	import { ProductTableDeleteAction, ProductTableEditAction } from '.';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import type { Product } from '$lib/types';
@@ -21,8 +21,7 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			<ProductTableViewAction {product} />
-			<ProductTableEditAction {product} />
+			<ProductTableEditAction productId={product.id} />
 			<ProductTableDeleteAction {product} />
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
