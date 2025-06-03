@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Header } from '$lib/components/header';
-	export let data;
+
+	let { data, children } = $props();
 </script>
 
 <Header title={data.headerTitle} />
 
-<slot />
+{@render children?.()}

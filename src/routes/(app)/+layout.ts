@@ -24,19 +24,7 @@ export const load: LayoutLoad = async ({ url }) => {
 	const segments = pathname.split('/').filter(Boolean);
 	const lastSegment = segments[segments.length - 1] ?? '';
 	const titleMap: Record<string, string> = {
-		'': 'Dashboard',
-		home: 'Home',
-		products: 'Products',
-		collaborators: 'Collaborators',
-		checkout: 'Checkout',
-		emails: 'Emails',
-		workflows: 'Workflows',
-		sales: 'Sales',
-		analytics: 'Analytics',
-		payouts: 'Payouts',
-		library: 'Library',
-		settings: 'Settings',
-		help: 'Help'
+		'': 'Dashboard'
 	};
 
 	const headerTitle =
