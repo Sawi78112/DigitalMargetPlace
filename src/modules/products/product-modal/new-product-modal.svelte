@@ -5,7 +5,7 @@
 
 	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
-	import { createProduct, getCategories, newProductSchema } from '..';
+	import { createProduct, getCategories, newProductSchema, updateProduct } from '..';
 	import type { Product } from '$lib/types';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
