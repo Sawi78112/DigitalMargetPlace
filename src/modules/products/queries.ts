@@ -14,3 +14,10 @@ export async function getUserProducts(): Promise<Product[]> {
 		url: '/products'
 	});
 }
+
+export async function getProductById(productId: string): Promise<Product> {
+	return await api<Product>({
+		method: 'GET',
+		url: `/${productId}`
+	});
+}
