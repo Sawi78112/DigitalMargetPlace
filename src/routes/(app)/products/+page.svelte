@@ -23,11 +23,13 @@
 </script>
 
 <Tabs.Root value="products">
-	<Tabs.List class="grid w-full grid-cols-3">
-		<Tabs.Trigger value="products">Products</Tabs.Trigger>
-		<Tabs.Trigger value="collaborators">Collaborators</Tabs.Trigger>
-		<Tabs.Trigger value="reviews">Reviews</Tabs.Trigger>
-	</Tabs.List>
+	<div class="w-full">
+		<Tabs.List class="flex justify-start gap-4 bg-transparent px-2">
+			<Tabs.Trigger value="products" variant="bottom_line">Products</Tabs.Trigger>
+			<Tabs.Trigger value="collaborators" variant="bottom_line">Collaborators</Tabs.Trigger>
+			<Tabs.Trigger value="reviews" variant="bottom_line">Reviews</Tabs.Trigger>
+		</Tabs.List>
+	</div>
 
 	<Tabs.Content value="products">
 		<Card.Root>
@@ -47,6 +49,10 @@
 					</p>
 
 					<Button href="/products/create-product">Add Products</Button>
+				</div>
+
+				<div class="space-y-5 pt-5">
+					<DataTable filterKey="name" data={$sortedProducts} {columns} />
 				</div>
 			</Card.Content>
 		</Card.Root>
@@ -68,7 +74,3 @@
 		</Card.Root>
 	</Tabs.Content>
 </Tabs.Root>
-
-<div class="space-y-5">
-	<DataTable filterKey="name" data={$sortedProducts} {columns} />
-</div>
