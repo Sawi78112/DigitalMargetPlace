@@ -1,16 +1,14 @@
 <script lang="ts">
 	import Ellipsis from 'lucide-svelte/icons/ellipsis';
-
 	import { ProductTableDeleteAction, ProductTableEditAction } from '.';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { Button } from '$lib/components/ui/button';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { Product } from '$lib/types';
+	import DropdownMenuItem from '$lib/components/ui/dropdown-menu/dropdown-menu-item.svelte';
 
-	type Props = {
-		product: Product;
-	};
+	let { product }: { product: Product } = $props();
 
-	let { product }: Props = $props();
+	let showDeleteAlert = $state(false);
 </script>
 
 <DropdownMenu.Root>
@@ -22,7 +20,16 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<ProductTableEditAction productId={product.id} />
-			<ProductTableDeleteAction {product} />
+			<Button
+				variant="ghost"
+				size="icon"
+				class="relative size-8 w-full p-0"
+				onclick={() => (showDeleteAlert = true)}>Delete</Button
+			>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
+
+{#if showDeleteAlert}
+	<ProductTableDeleteAction {product} bind:open={showDeleteAlert} />
+{/if}

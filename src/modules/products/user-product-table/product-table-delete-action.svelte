@@ -5,16 +5,14 @@
 
 	import { deleteProduct } from '..';
 	import type { Product } from '$lib/types';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import { Button } from '$lib/components/ui/button';
+	import * as Alert from '$lib/components/ui/alert';
 
 	type Props = {
 		product: Product;
 	};
 
-	let { product }: Props = $props();
-
-	let open = $state(false);
+	let { product, open = $bindable(true) }: Props & { open?: boolean } = $props();
 
 	const client = useQueryClient();
 
@@ -22,48 +20,42 @@
 		mutationKey: ['delete-product'],
 		mutationFn: deleteProduct,
 		onSuccess: () => {
-			client.invalidateQueries({
-				queryKey: ['product']
-			});
-
+			client.invalidateQueries({ queryKey: ['product'] });
 			open = false;
 			toast.success('Product deleted');
 		}
 	});
 </script>
 
-<Dialog.Root bind:open>
-	<Dialog.Trigger
-		class="relative size-8 w-full p-0 {buttonVariants({ variant: 'ghost', size: 'icon' })}"
-		onclick={() => (open = true)}
-	>
-		Delete
-	</Dialog.Trigger>
-	<Dialog.Content>
-		<Dialog.Header>
-			<Dialog.Title>Permanently Delete Product</Dialog.Title>
-			<Dialog.Description>
+{#if open}
+	<Alert.Root class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+		<div class="w-full max-w-lg rounded-lg bg-white p-6 text-center shadow-lg">
+			<Alert.Title class="text-lg font-semibold">Permanently Delete Product</Alert.Title>
+			<Alert.Description class="px-9 pb-6 pt-3 text-sm text-gray-700">
 				This action cannot be undone. This will permanently delete the product and remove all of its
-				data from our servers.
-			</Dialog.Description>
-		</Dialog.Header>
+				data.
+			</Alert.Description>
 
-		<Dialog.Footer>
-			<Button
-				variant="outline"
-				disabled={$deleteProductMutation.isPending || $deleteProductMutation.isPaused}
-				onclick={() => (open = false)}>Cancel</Button
-			>
-			<Button
-				variant="destructive"
-				disabled={$deleteProductMutation.isPending || $deleteProductMutation.isPaused}
-				onclick={() => $deleteProductMutation.mutate(product.id)}
-			>
-				{#if $deleteProductMutation.isPending || $deleteProductMutation.isPaused}
-					<Loader2Icon class="mr-2 h-5 w-5 animate-spin" />
-				{/if}
-				Delete
-			</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+			<div class="flex justify-center gap-4">
+				<Button
+					variant="outline"
+					onclick={() => (open = false)}
+					disabled={$deleteProductMutation.isPending}
+				>
+					Cancel
+				</Button>
+
+				<Button
+					variant="destructive"
+					onclick={() => $deleteProductMutation.mutate(product.id)}
+					disabled={$deleteProductMutation.isPending}
+				>
+					{#if $deleteProductMutation.isPending}
+						<Loader2Icon class="mr-2 h-5 w-5 animate-spin" />
+					{/if}
+					Confirm
+				</Button>
+			</div>
+		</div>
+	</Alert.Root>
+{/if}
