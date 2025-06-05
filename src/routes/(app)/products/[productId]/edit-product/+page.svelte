@@ -2,7 +2,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import { createQuery } from '@tanstack/svelte-query';
 	import type { Product } from '$lib/types.js';
-	import { EditProductModal } from '$modules/products/product-modal/index.js';
+	import { EditProductForm } from '$modules/products/product-form/index.js';
 	import { getProductById } from '$modules/products/queries.js';
 
 	let { data } = $props();
@@ -26,6 +26,6 @@
 	<Separator />
 
 	{#if product}
-		<EditProductModal {product} {productId} />
+		<EditProductForm {product} {productId} />
 	{/if}
 </div>
