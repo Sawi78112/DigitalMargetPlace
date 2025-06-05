@@ -12,6 +12,15 @@ export type AuthResult = {
 	token_expiry: string;
 };
 
+export type Email = {
+	email: string;
+};
+
+export type Password = {
+	current_password: string;
+	password: string;
+};
+
 export type User = {
 	id: string;
 	email: string;
