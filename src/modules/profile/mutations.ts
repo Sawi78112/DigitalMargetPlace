@@ -10,3 +10,19 @@ export async function updatePassword(data: { password: UpdatePasswordSchema }): 
 		data: password
 	});
 }
+
+export async function createProfile(data: NewProfileSchema): Promise<Profile> {
+	return api<Profile>({
+		method: 'POST',
+		url: '/profile',
+		data
+	});
+}
+
+export async function updateProfile(data: UpdateProfileSchema): Promise<Profile> {
+	return api<Profile>({
+		method: 'PUT',
+		url: '/profile',
+		data
+	});
+}
