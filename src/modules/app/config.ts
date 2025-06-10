@@ -31,3 +31,5 @@ export const links = [
 	{ title: 'Payouts', url: '/payouts', icon: CircleDollarSign },
 	{ title: 'Library', url: '/library', icon: Library }
 ];
+
+export const GENDER = ['Female', 'Male'];
