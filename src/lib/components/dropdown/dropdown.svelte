@@ -3,7 +3,7 @@
 	import * as Select from '$lib/components/ui/select';
 
 	type Props = {
-		selectedValue: string[];
+		selectedValue: string;
 		options: string[];
 		placeholder: string;
 		restProps?: SelectPrimitive.TriggerProps;
@@ -13,7 +13,7 @@
 </script>
 
 <Select.Root
-	type="multiple"
+	type="single"
 	onValueChange={(v) => {
 		selectedValue = v;
 	}}
