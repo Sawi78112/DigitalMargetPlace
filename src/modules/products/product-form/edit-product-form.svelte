@@ -4,7 +4,7 @@
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
-	import { Dropdown } from '$lib/components/dropdown';
+	import { MultipleDropdown } from '$lib/components/dropdown';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
@@ -93,7 +93,7 @@
 	<Form.Field {form} name="categories" class="col-span-4 sm:col-span-2">
 		<Form.Control>
 			<Form.Label>Category</Form.Label>
-			<Dropdown
+			<MultipleDropdown
 				placeholder="Select Categories"
 				bind:selectedValue={$formData.categories}
 				options={categoryNames}

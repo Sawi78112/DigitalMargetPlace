@@ -11,7 +11,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Alert from '$lib/components/ui/alert';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-	import { Dropdown } from '$lib/components/dropdown';
+	import { MultipleDropdown } from '$lib/components/dropdown';
 	import { reactiveQueryArgs } from '$lib/components/svelte-query';
 
 	type Props = {
@@ -83,7 +83,7 @@
 	<Form.Field {form} name="categories" class="col-span-4 sm:col-span-2">
 		<Form.Control>
 			<Form.Label>Category</Form.Label>
-			<Dropdown
+			<MultipleDropdown
 				placeholder="Select Categories"
 				bind:selectedValue={$formData.categories}
 				options={categoryNames}
