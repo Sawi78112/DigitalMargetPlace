@@ -51,7 +51,7 @@
 			<Form.Field {form} name="current_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>New Password</Form.Label>
+						<Form.Label>Current Password</Form.Label>
 						<div class="relative">
 							<Input
 								{...props}
