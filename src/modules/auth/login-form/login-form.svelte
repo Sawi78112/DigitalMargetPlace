@@ -100,7 +100,7 @@
 				Login
 			{/if}
 		</Form.Button>
-		<Button href="/register" variant="outline" class="border-2  border-primary">
+		<Button href="/register" variant="outline" class="border-primary  border-2">
 			Don't have an account?
 		</Button>
 	</div>
@@ -111,7 +111,7 @@
 		<span class="w-full border-t"></span>
 	</div>
 	<div class="relative flex justify-center text-xs uppercase">
-		<span class="bg-background px-2 text-muted-foreground"> Or continue with </span>
+		<span class="bg-background text-muted-foreground px-2"> Or continue with </span>
 	</div>
 </div>
 

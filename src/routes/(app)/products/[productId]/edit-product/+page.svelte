@@ -19,7 +19,7 @@
 
 <div class="space-y-4">
 	<div>
-		<p class="text-sm text-muted-foreground">
+		<p class="text-muted-foreground text-sm">
 			{product ? product.name : 'PRODUCT'}
 		</p>
 	</div>

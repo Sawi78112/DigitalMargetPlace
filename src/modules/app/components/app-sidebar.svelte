@@ -14,14 +14,14 @@
 </script>
 
 <Sidebar.Root
-	class="ml-4 mt-4 flex h-[calc(100vh-32px)] w-[240px] flex-col justify-between border-r bg-white"
+	class="mt-4 ml-4 flex h-[calc(100vh-32px)] w-[240px] flex-col justify-between border-r bg-white"
 >
-	<Sidebar.Header class="px-4 pb-4 pt-6">
+	<Sidebar.Header class="px-4 pt-6 pb-4">
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton
 					onclick={() => goto(urlRedirectForLoggedInUser(user))}
-					class="text-lg font-bold text-muted-foreground"
+					class="text-muted-foreground text-lg font-bold"
 				>
 					LOGO
 				</Sidebar.MenuButton>
