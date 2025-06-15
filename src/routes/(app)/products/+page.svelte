@@ -24,7 +24,7 @@
 
 <Tabs.Root value="products">
 	<div class="w-full">
-		<Tabs.List class="flex justify-start gap-4 bg-transparent px-2">
+		<Tabs.List>
 			<Tabs.Trigger value="products">Products</Tabs.Trigger>
 			<Tabs.Trigger value="collaborators">Collaborators</Tabs.Trigger>
 			<Tabs.Trigger value="reviews">Reviews</Tabs.Trigger>

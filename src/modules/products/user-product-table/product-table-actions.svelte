@@ -30,6 +30,4 @@
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
 
-{#if showDeleteAlert}
-	<ProductTableDeleteAction {product} bind:open={showDeleteAlert} />
-{/if}
+<ProductTableDeleteAction {product} bind:open={showDeleteAlert} />

@@ -8,9 +8,9 @@
 	setCurrentUser(data.user);
 </script>
 
-<Sidebar.Provider class="bg-gray-100 p-4">
+<Sidebar.Provider class="">
 	<AppSidebar />
-	<main class="container mx-auto rounded-xl bg-white">
+	<main class="container mx-auto rounded-xl bg-white px-10 py-6">
 		{@render children?.()}
 	</main>
 </Sidebar.Provider>
