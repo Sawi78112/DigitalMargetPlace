@@ -21,7 +21,7 @@
 
 	const client = useQueryClient();
 
-	const createProfileMutation = createMutation({
+	const createProfileMutation = createMutation<typeof createProfile, unknown, Parameters<typeof createProfile>[0]>({
 		mutationKey: ['create-profile'],
 		mutationFn: createProfile,
 		onSuccess: () => {

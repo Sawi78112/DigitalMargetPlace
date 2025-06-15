@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Separator } from '$lib/components/ui/separator';
 	import { createQuery } from '@tanstack/svelte-query';
+
+	import { Separator } from '$lib/components/ui/separator';
 	import type { Product } from '$lib/types.js';
-	import { EditProductForm } from '$modules/products/product-form/index.js';
-	import { getProductById } from '$modules/products/queries.js';
+	import { EditProductForm } from '$modules/products/product-form';
+	import { getProductById } from '$modules/products';
 
 	let { data } = $props();
 

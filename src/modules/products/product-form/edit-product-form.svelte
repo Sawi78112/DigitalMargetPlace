@@ -2,20 +2,17 @@
 	import { CircleAlert, LoaderIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
+	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
+
+	import { getCategories, updateProduct, updateProductSchema } from '..';
 	import { MultipleDropdown } from '$lib/components/dropdown';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
 	import * as Alert from '$lib/components/ui/alert';
-
-	import { createQuery } from '@tanstack/svelte-query';
-
-	import { getCategories, updateProduct, updateProductSchema } from '..';
-
 	import type { Product } from '$lib/types';
-	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
+	import { Textarea } from '$lib/components/ui/textarea';
 	import { reactiveQueryArgs } from '$lib/components/svelte-query';
 
 	type Props = {

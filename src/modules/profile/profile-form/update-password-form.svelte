@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { CircleAlert, Eye, LoaderIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
+	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
+	import { toast } from 'svelte-sonner';
+
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { toast } from 'svelte-sonner';
 	import { Button } from '$lib/components/ui/button';
 	import * as Alert from '$lib/components/ui/alert';
 	import { updatePassword, updatePasswordSchema } from '$modules/profile';

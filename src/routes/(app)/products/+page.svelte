@@ -37,7 +37,7 @@
 				<div class="flex flex-col items-center space-y-2 text-center">
 					<Button
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
-						href="/products/create-product"
+						href="/products/create"
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -48,7 +48,7 @@
 						effortlessly.
 					</p>
 
-					<Button href="/products/create-product">Add Products</Button>
+					<Button href="/products/create">Add Products</Button>
 				</div>
 
 				<div class="space-y-5 pt-5">

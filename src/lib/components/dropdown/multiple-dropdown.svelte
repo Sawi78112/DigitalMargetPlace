@@ -27,7 +27,7 @@
 	</Select.Trigger>
 	<Select.Content class="max-h-96 overflow-y-auto">
 		<Select.Group>
-			{#each options as option}
+			{#each options as option (option)}
 				<Select.Item value={option} label={option}>
 					{option}
 				</Select.Item>

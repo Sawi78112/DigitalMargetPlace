@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Ellipsis from 'lucide-svelte/icons/ellipsis';
-	import { ProductTableDeleteAction, ProductTableEditAction } from '.';
+	import { ProductTableDeleteAction } from '.';
 	import { Button } from '$lib/components/ui/button';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { Product } from '$lib/types';
-	import DropdownMenuItem from '$lib/components/ui/dropdown-menu/dropdown-menu-item.svelte';
+	import { goto } from '$app/navigation';
 
 	let { product }: { product: Product } = $props();
 
@@ -19,13 +19,12 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			<ProductTableEditAction productId={product.id} />
-			<Button
-				variant="ghost"
-				size="icon"
-				class="relative size-8 w-full p-0"
-				onclick={() => (showDeleteAlert = true)}>Delete</Button
+			<DropdownMenu.Item
+				onclick={() => {
+					goto(`/products/${product.id}/edit`);
+				}}>Edit</DropdownMenu.Item
 			>
+			<DropdownMenu.Item onclick={() => (showDeleteAlert = true)}>Delete</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
