@@ -4,7 +4,7 @@
 	import { RegisterForm } from '$modules/auth/register-form';
 </script>
 
-<div class="container relative flex h-screen items-center justify-center">
+<div class="relative container mx-auto flex h-screen items-center justify-center">
 	<div class="lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 			<div class="flex flex-col items-center gap-y-4 pt-10">
@@ -15,19 +15,19 @@
 				</div>
 				<div class="text-center">
 					<h1 class="text-2xl font-semibold tracking-tight">Create an account</h1>
-					<p class="text-sm text-muted-foreground">
+					<p class="text-muted-foreground text-sm">
 						Register your email below to create your account
 					</p>
 				</div>
 			</div>
 			<RegisterForm />
-			<p class="px-8 text-center text-sm text-muted-foreground">
+			<p class="text-muted-foreground px-8 text-center text-sm">
 				By clicking continue, you agree to our
-				<a href="/terms" class="underline underline-offset-4 hover:text-primary">
+				<a href="/terms" class="hover:text-primary underline underline-offset-4">
 					Terms of Service
 				</a>
 				and
-				<a href="/privacy" class="underline underline-offset-4 hover:text-primary">
+				<a href="/privacy" class="hover:text-primary underline underline-offset-4">
 					Privacy Policy
 				</a>
 				.

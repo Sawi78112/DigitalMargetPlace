@@ -21,11 +21,12 @@
 		"@eslint/js": "^9.26.0",
 		"@huntabyte/eslint-config": "^0.3.2",
 		"@internationalized/date": "^3.8.2",
+		"@lucide/svelte": "^0.515.0",
 		"@playwright/test": "^1.52.0",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.20.8",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"@tailwindcss/vite": "^4.1.10",
+		"@tailwindcss/vite": "^4.0.0",
 		"@tanstack/svelte-query-devtools": "^5.75.0",
 		"@types/js-cookie": "^3.0.6",
 		"@types/validator": "^13.15.0",
@@ -45,13 +46,13 @@
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"svelte": "^5.28.2",
+		"svelte": "^5.34.3",
 		"svelte-check": "^4.1.7",
 		"svelte-sonner": "^1.0.5",
 		"sveltekit-superforms": "^2.26.1",
 		"tailwind-merge": "^3.3.1",
 		"tailwind-variants": "^1.0.0",
-		"tailwindcss": "^4.1.10",
+		"tailwindcss": "^4.0.0",
 		"tw-animate-css": "^1.3.4",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.32.0",
@@ -62,7 +63,6 @@
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.2.5",
-		"@lucide/svelte": "^0.515.0",
 		"@tanstack/svelte-query": "^5.75.0",
 		"@tanstack/table-core": "^8.21.3",
 		"axios": "^1.9.0",
@@ -71,5 +71,10 @@
 		"libphonenumber-js": "^1.12.7",
 		"runed": "^0.23.4",
 		"validator": "^13.15.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
 	}
 }

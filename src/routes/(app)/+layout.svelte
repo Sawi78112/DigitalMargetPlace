@@ -10,7 +10,7 @@
 
 <Sidebar.Provider class="bg-gray-100 p-4">
 	<AppSidebar />
-	<main class="container rounded-xl bg-white">
+	<main class="container mx-auto rounded-xl bg-white">
 		{@render children?.()}
 	</main>
 </Sidebar.Provider>

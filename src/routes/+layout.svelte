@@ -2,12 +2,10 @@
 	import '@fontsource-variable/inter';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
-
 	import '../app.css';
 	import { Toaster } from '$lib/components/ui/sonner';
 
 	let { children } = $props();
-
 	const queryClient = new QueryClient();
 </script>
 
