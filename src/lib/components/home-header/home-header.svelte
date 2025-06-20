@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BellIcon, SearchIcon, MessageCircleIcon } from 'lucide-svelte';
+	import { BellIcon, MessageCircleIcon, SearchIcon } from 'lucide-svelte';
 	import Input from '../ui/input/input.svelte';
 
 	export let name: string;
