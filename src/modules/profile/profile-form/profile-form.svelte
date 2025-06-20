@@ -4,9 +4,10 @@
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
+
 	import { createProfile, newProfileSchema, updateProfile } from '..';
-	import type { Profile } from '$lib/types';
 	import * as Form from '$lib/components/ui/form';
+	import type { Profile } from '$lib/types';
 	import { Input } from '$lib/components/ui/input';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Dropdown } from '$lib/components/dropdown';
