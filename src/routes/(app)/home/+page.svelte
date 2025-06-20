@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SearchIcon, PencilIcon, CheckCircleIcon, GridIcon } from 'lucide-svelte';
+	import { CheckCircleIcon, GridIcon, PencilIcon, SearchIcon } from 'lucide-svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 </script>
 

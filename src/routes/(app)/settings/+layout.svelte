@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Header } from '$lib/components/header';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { HomeHeader } from '$lib/components/home-header';
+
+	import { Header } from '$lib/components/header';
 	import { reactiveQueryArgs } from '$lib/components/svelte-query/query.svelte.js';
 	import { getProfileByUserId } from '$modules/profile';
 

@@ -1,26 +1,26 @@
 <script lang="ts">
-	import { createQuery } from '@tanstack/svelte-query';
+	// import { createQuery } from '@tanstack/svelte-query';
 
-	import { ProfileForm, ProfilePasswordForm } from '$modules/profile/profile-form';
-	import { reactiveQueryArgs } from '$lib/components/svelte-query';
-	import { getProfileByUserId } from '$modules/profile/queries';
-	import { getCurrentUser } from '$modules/auth';
-	import * as Tabs from '$lib/components/ui/tabs';
+	// import { ProfileForm, ProfilePasswordForm } from '$modules/profile/profile-form';
+	// import { reactiveQueryArgs } from '$lib/components/svelte-query';
+	// import { getProfileByUserId } from '$modules/profile/queries';
+	// import { getCurrentUser } from '$modules/auth';
+	// import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 
-	const { user } = getCurrentUser();
+	// const { user } = getCurrentUser();
 
-	let userProfile = createQuery(
-		reactiveQueryArgs(() => ({
-			queryKey: ['user-profile', user.id],
-			queryFn: () => getProfileByUserId()
-		}))
-	);
+	// let userProfile = createQuery(
+	// 	reactiveQueryArgs(() => ({
+	// 		queryKey: ['user-profile', user.id],
+	// 		queryFn: () => getProfileByUserId()
+	// 	}))
+	// );
 
-	let profile = $derived($userProfile.data);
-	let userId = user.id;
+	// let profile = $derived($userProfile.data);
+	// let userId = user.id;
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
