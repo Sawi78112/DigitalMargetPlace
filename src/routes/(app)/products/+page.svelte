@@ -26,7 +26,6 @@
 	<div class="w-full">
 		<Tabs.List>
 			<Tabs.Trigger value="products">Products</Tabs.Trigger>
-			<Tabs.Trigger value="collaborators">Collaborators</Tabs.Trigger>
 			<Tabs.Trigger value="reviews">Reviews</Tabs.Trigger>
 		</Tabs.List>
 	</div>
@@ -37,7 +36,7 @@
 				<div class="flex flex-col items-center space-y-2 text-center">
 					<Button
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
-						href="/products/create"
+						href="/products/add-new-product"
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -48,21 +47,13 @@
 						effortlessly.
 					</p>
 
-					<Button href="/products/create">Add Products</Button>
+					<Button href="/products/add-new-product">Add Products</Button>
 				</div>
 
 				<div class="space-y-5 pt-5">
 					<DataTable filterKey="name" data={$sortedProducts} {columns} />
 				</div>
 			</Card.Content>
-		</Card.Root>
-	</Tabs.Content>
-
-	<Tabs.Content value="collaborators">
-		<Card.Root>
-			<Card.Header>
-				<Card.Title class="text-gray-700"></Card.Title>
-			</Card.Header>
 		</Card.Root>
 	</Tabs.Content>
 
