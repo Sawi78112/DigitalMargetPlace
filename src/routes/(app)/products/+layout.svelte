@@ -18,7 +18,11 @@
 </script>
 
 {#if profile}
-	<Header name={`${profile.first_name} ${profile.last_name}`} title={data.headerTitle} />
+	<Header
+		name={`${profile.first_name} ${profile.last_name}`}
+		title={data.headerTitle}
+		subtitle={data.headerSubtitle}
+	/>
 {:else}
 	<div>Loading profile...</div>
 {/if}
