@@ -18,7 +18,7 @@
 		selectedValue = v;
 	}}
 >
-	<Select.Trigger class="" {...restProps}>
+	<Select.Trigger class="w-full" {...restProps}>
 		{#if selectedValue}
 			<span>{selectedValue}</span>
 		{:else}

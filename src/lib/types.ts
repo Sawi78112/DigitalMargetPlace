@@ -47,9 +47,11 @@ export type ForgotPasswordRequestResult = {
 
 export type Product = {
 	id: string;
-	name: string;
+	title: string;
 	description: string;
+	price: number;
 	categories: string[];
+	visibility: string;
 };
 
 export type Categories = {
