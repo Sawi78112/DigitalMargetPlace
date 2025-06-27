@@ -2,9 +2,11 @@ import { z } from 'zod';
 import type { Infer } from 'sveltekit-superforms';
 
 export const newProductSchema = z.object({
-	name: z.string().min(1, 'Name is required'),
-	description: z.string().min(1, 'Description is required'),
-	categories: z.array(z.string()).min(1)
+	title: z.string().min(1, 'required'),
+	description: z.string().min(1, 'required'),
+	price: z.number().min(0, 'price must be non-negative'),
+	categories: z.array(z.string()).min(1, 'at least one category is required'),
+	visibility: z.string().min(1, 'required')
 });
 
 export const updateProductSchema = newProductSchema.extend({
