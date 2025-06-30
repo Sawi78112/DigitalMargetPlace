@@ -6,12 +6,20 @@ import { renderComponent } from '$lib/components/ui/data-table/index.js';
 
 export const columns: ColumnDef<Product>[] = [
 	{
-		accessorKey: 'name',
-		header: 'Name'
+		accessorKey: 'title',
+		header: 'Title'
 	},
 	{
 		accessorKey: 'description',
 		header: 'Description'
+	},
+	{
+		accessorKey: 'price',
+		header: 'Price'
+	},
+	{
+		accessorKey: 'visibility',
+		header: 'Visibility'
 	},
 	{
 		accessorKey: 'categories',
