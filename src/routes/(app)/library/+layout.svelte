@@ -19,7 +19,5 @@
 
 {#if profile}
 	<Header name={`${profile.first_name} ${profile.last_name}`} title={data.headerTitle} />
-{:else}
-	<div>Loading profile...</div>
 {/if}
 {@render children?.()}

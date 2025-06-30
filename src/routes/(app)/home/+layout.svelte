@@ -19,8 +19,6 @@
 
 {#if profile}
 	<HomeHeader name={`${profile.first_name} ${profile.last_name}`} />
-{:else}
-	<div>Loading profile...</div>
 {/if}
 
 {@render children?.()}

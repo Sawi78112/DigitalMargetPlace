@@ -23,7 +23,5 @@
 		title={data.headerTitle}
 		subtitle="Complete your profile by filling in all the necessary details, such as your personal information, preferences, and interests, to help ensure that you get the most personalized experience and connect with others more effectively."
 	/>
-{:else}
-	<div>Loading profile...</div>
 {/if}
 {@render children?.()}

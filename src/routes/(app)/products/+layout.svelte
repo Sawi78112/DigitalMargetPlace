@@ -23,7 +23,5 @@
 		title={data.headerTitle}
 		subtitle={data.headerSubtitle}
 	/>
-{:else}
-	<div>Loading profile...</div>
 {/if}
 {@render children?.()}
