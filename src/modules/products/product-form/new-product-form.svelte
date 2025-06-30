@@ -126,7 +126,7 @@
 			<Form.Label>Category</Form.Label>
 			<MultipleDropdown
 				placeholder="categories"
-				bind:selectedValue={$formData.gender}
+				bind:selectedValue={$formData.categories}
 				options={categoryNames}
 			/>
 		</Form.Control>

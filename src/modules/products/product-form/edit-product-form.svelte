@@ -14,6 +14,8 @@
 	import type { Product } from '$lib/types';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { reactiveQueryArgs } from '$lib/components/svelte-query';
+	import { Label } from '$lib/components/ui/label';
+	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
 
 	type Props = {
 		product: Product;
@@ -65,8 +67,10 @@
 		if (product) {
 			$formData = {
 				id: product.id,
-				name: product.name,
+				title: product.title,
 				description: product.description,
+				price: product.price,
+				visibility: product.visibility,
 				categories: product.categories ?? []
 			};
 		}
@@ -79,19 +83,55 @@
 	id="edit-product-record-form"
 	class="grid w-full grid-cols-4 gap-x-4 gap-y-4"
 >
-	<Form.Field {form} name="name" class="col-span-4 sm:col-span-2">
+	<Label>Product Photos</Label>
+	<Form.Field {form} name="photos" class="col-span-6">
 		<Form.Control>
-			<Form.Label>Name</Form.Label>
-			<Input type="text" bind:value={$formData.name} />
+			<Label
+				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
+			>
+				<img
+					src="https://placehold.co/400"
+					alt="Upload Icon"
+					class="mx-auto h-20 w-20 text-blue-400"
+				/>
+				<p class="text-sm font-medium">
+					Upload Image <span class="text-gray-500">(0/10)</span>
+				</p>
+				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
+				<Input
+					id="productPhotos"
+					type="file"
+					name="productPhotos"
+					multiple
+					accept="image/*"
+					class="absolute inset-0 cursor-pointer opacity-0"
+				/>
+			</Label>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="categories" class="col-span-4 sm:col-span-2">
+	<Form.Field {form} name="title" class="col-span-4 sm:col-span-2">
+		<Form.Control>
+			<Form.Label>Title</Form.Label>
+			<Input type="text" bind:value={$formData.title} />
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="price" class="col-span-4 sm:col-span-2">
+		<Form.Control>
+			<Form.Label>Price</Form.Label>
+			<Input type="number" bind:value={$formData.price} />
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} class="col-span-4 sm:col-span-2" name="categories">
 		<Form.Control>
 			<Form.Label>Category</Form.Label>
 			<MultipleDropdown
-				placeholder="Select Categories"
+				placeholder="categories"
 				bind:selectedValue={$formData.categories}
 				options={categoryNames}
 			/>
@@ -99,10 +139,79 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="description" class="col-span-4 sm:col-span-2">
+	<Label>Cover</Label>
+	<Form.Field {form} name="cover" class="col-span-6">
+		<Form.Control>
+			<Label
+				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
+			>
+				<img
+					src="https://placehold.co/400"
+					alt="Upload Icon"
+					class="mx-auto h-20 w-20 text-blue-400"
+				/>
+				<p class="text-sm font-medium">
+					Upload Image <span class="text-gray-500">(0/10)</span>
+				</p>
+				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
+				<Input
+					id="productPhotos"
+					type="file"
+					name="productPhotos"
+					multiple
+					accept="image/*"
+					class="absolute inset-0 cursor-pointer opacity-0"
+				/>
+			</Label>
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="description" class="col-span-6">
 		<Form.Control>
 			<Form.Label>Description</Form.Label>
 			<Textarea bind:value={$formData.description} />
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="visibility" class="col-span-6">
+		<Form.Control>
+			<Form.Label>Visibility</Form.Label>
+			<RadioGroup bind:value={$formData.visibility} class="mt-2 flex flex-col gap-3">
+				<div class="flex items-start space-x-3">
+					<RadioGroupItem id="visible" value="visible" />
+					<Label for="visible" class="flex flex-col">
+						<p>
+							<span class="font-medium">Visible</span> -
+							<span class="text-muted-foreground text-sm">Everyone can see this content.</span>
+						</p>
+					</Label>
+				</div>
+				<div class="flex items-start space-x-3">
+					<RadioGroupItem id="invisible" value="invisible" />
+					<Label for="invisible" class="flex flex-col">
+						<p>
+							<span class="font-medium">Invisible</span> -
+							<span class="text-muted-foreground text-sm"
+								>Nobody except you can see this content.</span
+							>
+						</p>
+					</Label>
+				</div>
+				<div class="flex items-start space-x-3">
+					<RadioGroupItem id="unlisted" value="unlisted" />
+					<Label for="unlisted" class="flex flex-col">
+						<p>
+							<span class="font-medium">Unlisted</span> -
+							<span class="text-muted-foreground text-sm"
+								>Only people with the direct link can see this. It won't be listed alongside other
+								content on your store.</span
+							>
+						</p>
+					</Label>
+				</div>
+			</RadioGroup>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
@@ -126,7 +235,7 @@
 		{/if}
 	</div>
 
-	<div class="col-span-4 mt-4 flex justify-end gap-2">
+	<div class="col-span-6 mt-2 mb-6 flex justify-end gap-3">
 		<Button variant="outline">Cancel</Button>
 		<Button
 			class="px-6 py-2"
