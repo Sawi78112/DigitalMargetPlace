@@ -45,6 +45,10 @@ export type ForgotPasswordRequestResult = {
 	id: string;
 };
 
+export type Photo = {
+	image_url: string;
+};
+
 export type Product = {
 	id: string;
 	title: string;
@@ -52,6 +56,8 @@ export type Product = {
 	price: number;
 	categories: string[];
 	visibility: string;
+	cover_photo?: Photo;
+	product_photos?: Photo[];
 };
 
 export type Categories = {
