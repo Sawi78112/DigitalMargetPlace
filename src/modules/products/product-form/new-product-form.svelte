@@ -16,6 +16,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
 	import { Button } from '$lib/components/ui/button';
+	import { writable } from 'svelte/store';
 
 	type Props = {
 		product?: Product | null;
@@ -58,15 +59,51 @@
 
 	const { form: formData, enhance } = form;
 
+	function productPhotoFileToString(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const files = Array.from(input.files ?? []);
+
+		if (files.length > 10) {
+			alert('You can select up to 10 images.');
+			return;
+		}
+
+		selectedPhotosCount.set(files.length);
+
+		$formData.product_photos = files.map((file) => ({
+			image_url: URL.createObjectURL(file)
+		}));
+	}
+
+	function coverPhotoFileToString(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const files = Array.from(input.files ?? []);
+
+		if (files.length === 0) {
+			$formData.cover_photo = undefined;
+			return;
+		}
+
+		$formData.cover_photo = {
+			image_url: URL.createObjectURL(files[0])
+		};
+	}
+
+	const selectedPhotosCount = writable(0);
+
 	$effect(() => {
 		if (product) {
 			$formData = {
 				title: product.title,
 				description: product.description,
 				price: product.price,
+				visibility: product.visibility,
 				categories: product.categories ?? [],
-				visibility: product.visibility
+				product_photos: product.product_photos ?? [],
+				cover_photo: product.cover_photo ?? []
 			};
+
+			selectedPhotosCount.set(product.product_photos?.length ?? 0);
 		}
 	});
 </script>
@@ -78,7 +115,7 @@
 	class="grid w-full grid-cols-6 gap-x-6 gap-y-6"
 >
 	<Label>Product Photos</Label>
-	<Form.Field {form} name="photos" class="col-span-6">
+	<Form.Field {form} name="product_photos" class="col-span-6">
 		<Form.Control>
 			<Label
 				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
@@ -89,17 +126,10 @@
 					class="mx-auto h-20 w-20 text-blue-400"
 				/>
 				<p class="text-sm font-medium">
-					Upload Image <span class="text-gray-500">(0/10)</span>
+					Upload Image <span class="text-gray-500">({$selectedPhotosCount}/10)</span>
 				</p>
 				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
-				<Input
-					id="productPhotos"
-					type="file"
-					name="productPhotos"
-					multiple
-					accept="image/*"
-					class="absolute inset-0 cursor-pointer opacity-0"
-				/>
+				<Input type="file" accept="image/*" multiple onchange={productPhotoFileToString} />
 			</Label>
 		</Form.Control>
 		<Form.FieldErrors />
@@ -116,7 +146,7 @@
 	<Form.Field {form} name="price" class="col-span-4 sm:col-span-2">
 		<Form.Control>
 			<Form.Label>Price</Form.Label>
-			<Input type="number" bind:value={$formData.price} />
+			<Input type="number" step="0.01" bind:value={$formData.price} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
@@ -134,7 +164,7 @@
 	</Form.Field>
 
 	<Label>Cover</Label>
-	<Form.Field {form} name="cover" class="col-span-6">
+	<Form.Field {form} name="cover_photo" class="col-span-6">
 		<Form.Control>
 			<Label
 				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
@@ -144,18 +174,9 @@
 					alt="Upload Icon"
 					class="mx-auto h-20 w-20 text-blue-400"
 				/>
-				<p class="text-sm font-medium">
-					Upload Image <span class="text-gray-500">(0/10)</span>
-				</p>
+				<p class="text-sm font-medium">Upload Cover Photo</p>
 				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
-				<Input
-					id="productPhotos"
-					type="file"
-					name="productPhotos"
-					multiple
-					accept="image/*"
-					class="absolute inset-0 cursor-pointer opacity-0"
-				/>
+				<Input type="file" accept="image/*" onchange={coverPhotoFileToString} />
 			</Label>
 		</Form.Control>
 		<Form.FieldErrors />
