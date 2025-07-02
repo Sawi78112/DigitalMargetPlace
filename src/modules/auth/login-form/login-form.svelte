@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CircleAlert, Loader2Icon } from 'lucide-svelte';
+	import { CircleAlert, Eye, Loader2Icon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { toast } from 'svelte-sonner';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
@@ -14,6 +14,8 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
 	import { auth } from '$lib/api';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import Label from '$lib/components/ui/label/label.svelte';
 
 	const loginMutation = createMutation({
 		mutationKey: ['login'],
@@ -37,82 +39,109 @@
 	});
 
 	const { form: formData, enhance } = form;
+
+	let showPassword = false;
 </script>
 
-<form method="POST" use:enhance class="w-full space-y-4">
-	<div class="space-y-4">
-		<Form.Field {form} name="email">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Email</Form.Label>
-					<Input {...props} type="email" bind:value={$formData.email} />
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<div class="flex flex-col pb-6">
+	<h1 class="text-2xl font-semibold">Sign In</h1>
+	<p class="text-muted-foreground text-sm">Welcome back!</p>
+</div>
 
-		<Form.Field {form} name="password">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Password</Form.Label>
-					<Input {...props} type="password" bind:value={$formData.password} />
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<form method="POST" use:enhance class="space-y-4">
+	<Form.Field {form} name="email">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label class="pb-1">Email Address</Form.Label>
+				<Input {...props} type="email" placeholder="Enter Email Address" class="rounded-full" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 
-		{#if $loginMutation.isPaused}
-			<Alert.Root variant="destructive">
-				<CircleAlert class="size-4" />
-				<Alert.Title>You are offline</Alert.Title>
-				<Alert.Description>Please connect to the internet.</Alert.Description>
-			</Alert.Root>
-		{/if}
-		{#if $loginMutation.isError}
-			<Alert.Root variant="destructive">
-				<CircleAlert class="size-4" />
-				<Alert.Title>Email or password is incorrect</Alert.Title>
-			</Alert.Root>
-		{/if}
+	<Form.Field {form} class="w-full" name="password">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Password</Form.Label>
+				<div class="relative">
+					<Input
+						{...props}
+						type={showPassword ? 'text' : 'password'}
+						bind:value={$formData.password}
+						placeholder="Enter Password"
+						class="rounded-full"
+					/>
+					<button
+						type="button"
+						class="absolute inset-y-0 right-2 flex items-center"
+						onclick={() => (showPassword = !showPassword)}
+						tabindex="-1"
+					>
+						<Eye
+							class="size-4 transition-colors duration-200 {showPassword
+								? 'text-foreground'
+								: 'text-muted-foreground'}"
+						/>
+					</button>
+				</div>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<div class="flex items-center justify-between text-sm">
+		<Label class="flex items-center space-x-2">
+			<Checkbox id="remember" />
+			<span>Remember Me</span>
+		</Label>
+		<Button href="/forgot-password/request" variant="link" class="text-sm">Forgot Password?</Button>
 	</div>
-	<!-- <Form.Button class="w-full" disabled={$loginMutation.isPending || $loginMutation.isPaused}>
-		{#if $loginMutation.isPending || $loginMutation.isPaused}
-			<LoaderIcon class="mr-1 size-4 animate-spin" />
+
+	{#if $loginMutation.isPaused}
+		<Alert.Root variant="destructive">
+			<CircleAlert class="size-4" />
+			<Alert.Title>You are offline</Alert.Title>
+			<Alert.Description>Please connect to the internet.</Alert.Description>
+		</Alert.Root>
+	{/if}
+	{#if $loginMutation.isError}
+		<Alert.Root variant="destructive">
+			<CircleAlert class="size-4" />
+			<Alert.Title>Email or password is incorrect</Alert.Title>
+		</Alert.Root>
+	{/if}
+
+	<Form.Button class="w-full rounded-full  text-white " disabled={$loginMutation.isPending}>
+		{#if $loginMutation.isPending}
+			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
+			Logging in...
+		{:else}
+			Next
 		{/if}
-		Login
-	</Form.Button> -->
-
-	<div>
-		<Button href="/forgot-password/request" variant="link" class="h-0 p-0 text-gray-500 underline">
-			Forgot password?
-		</Button>
-	</div>
-
-	<div class="mt-auto flex flex-col space-y-4 py-4">
-		<Form.Button disabled={$loginMutation.isPending}>
-			{#if $loginMutation.isPending}
-				<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
-				Logging in...
-			{:else}
-				Login
-			{/if}
-		</Form.Button>
-		<Button href="/register" variant="outline" class="border-primary  border-2">
-			Don't have an account?
-		</Button>
-	</div>
+	</Form.Button>
 </form>
 
-<div class="relative">
+<div class="relative my-6">
 	<div class="absolute inset-0 flex items-center">
 		<span class="w-full border-t"></span>
 	</div>
 	<div class="relative flex justify-center text-xs uppercase">
-		<span class="bg-background text-muted-foreground px-2"> Or continue with </span>
+		<span class="bg-background text-muted-foreground px-2"> Or Register with </span>
 	</div>
 </div>
 
-<Button variant="outline" type="button">
-	<Icons.google class="mr-2 size-4" />
-	Google
-</Button>
+<div class="space-y-2">
+	<Button variant="outline" type="button" class="w-full rounded-full">
+		<Icons.google class="mr-2 size-4" />
+		Sign Up with Google
+	</Button>
+	<Button variant="outline" type="button" class="w-full rounded-full">
+		<Icons.apple class="mr-2 size-4" />
+		Sign Up with Apple
+	</Button>
+</div>
+
+<div class="pt-6 text-center text-sm">
+	Don't have an account?
+	<Button href="/register" variant="link" class="text-sm font-medium">Sign Up</Button>
+</div>
