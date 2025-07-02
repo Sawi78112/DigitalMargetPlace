@@ -16,7 +16,8 @@
 		mutationFn: forgotPasswordRequest,
 		onSuccess: (e) => {
 			toast.success('Password reset otp has been sent to your email');
-			goto(`/forgot-password?id=${e.id}`);
+			// goto(`/forgot-password?id=${e.id}`);
+			goto(`/forgot-password/otp`);
 		},
 		onError: (e) => {
 			if (e.status === 422) {
@@ -40,32 +41,39 @@
 	const { form: formData, enhance } = form;
 </script>
 
-<form method="POST" use:enhance>
-	<div class="mb-8 text-center">
-		<h1 class="text-2xl font-bold">Forgot Password Request</h1>
-		<h1 class="text-sm text-neutral-500">
-			Enter your email to receive OTP code for resetting password
-		</h1>
-	</div>
-	<Form.Field class="flex flex-col items-center justify-center" {form} name="email">
+<div class="flex flex-col pb-6">
+	<h1 class="text-2xl font-semibold">Forgot Password</h1>
+	<p class="text-muted-foreground text-sm">
+		Please input your email address below to request a reset password link
+	</p>
+</div>
+
+<form method="POST" use:enhance class="space-y-4">
+	<Form.Field {form} name="email">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Email</Form.Label>
-				<Input {...props} bind:value={$formData.email} />
+				<Form.Label class="pb-1">Email Address</Form.Label>
+				<Input
+					{...props}
+					type="email"
+					placeholder="Enter Email Address"
+					bind:value={$formData.email}
+					class="rounded-full"
+				/>
 			{/snippet}
 		</Form.Control>
-		<div class="text-center">
-			<Form.FieldErrors class="text-sm" />
-		</div>
-		<div class="mt-auto flex w-full flex-1 flex-col space-y-4 py-4">
-			<Form.Button disabled={$forgotPasswordRequestMutation.isPending} class="w-full">
-				{#if $forgotPasswordRequestMutation.isPending}
-					<Loader2Icon class="mr-2 size-4 animate-spin" />
-					Submitting...
-				{:else}
-					Submit
-				{/if}
-			</Form.Button>
-		</div>
+		<Form.FieldErrors />
 	</Form.Field>
+
+	<Form.Button
+		disabled={$forgotPasswordRequestMutation.isPending}
+		class="w-full rounded-full  text-white"
+	>
+		{#if $forgotPasswordRequestMutation.isPending}
+			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
+			Submitting...
+		{:else}
+			Submit
+		{/if}
+	</Form.Button>
 </form>
