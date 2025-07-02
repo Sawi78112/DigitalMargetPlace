@@ -3,10 +3,11 @@ import type {
 	ForgotPasswordRequestSchema,
 	ForgotPasswordSchema,
 	LoginSchema,
+	OtpSchema,
 	RegisterSchema
 } from '.';
 import { api } from '$lib/api';
-import type { AuthResult, ForgotPasswordRequestResult } from '$lib/types';
+import type { AuthResult, ForgotPasswordRequestResult, Otp } from '$lib/types';
 
 export async function login(data: LoginSchema): Promise<AuthResult> {
 	return await api<AuthResult>({
@@ -43,6 +44,14 @@ export async function forgotPassword(data: Omit<ForgotPasswordSchema, 'confirmPa
 			...data,
 			id
 		}
+	});
+}
+
+export async function otp(data: OtpSchema) {
+	return await api<Otp>({
+		url: '/otp',
+		method: 'POST',
+		data
 	});
 }
 
