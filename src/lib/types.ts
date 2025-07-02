@@ -45,6 +45,10 @@ export type ForgotPasswordRequestResult = {
 	id: string;
 };
 
+export type Otp = {
+	code: string;
+};
+
 export type Photo = {
 	image_url: string;
 };
