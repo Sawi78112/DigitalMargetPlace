@@ -43,6 +43,12 @@ export const forgotPasswordSchema = z
 
 export type ForgotPasswordSchema = Infer<typeof forgotPasswordSchema>;
 
+export const otpSchema = z.object({
+	code: z.array(z.string().length(1)).length(6, { message: 'Must have 6 characters' })
+});
+
+export type OtpSchema = Infer<typeof otpSchema>;
+
 export const emailConfirmationSchema = z.object({
 	code: z.string().min(6, {
 		message: 'Email Confirmation OTP must be at least 6 characters'
