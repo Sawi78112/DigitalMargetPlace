@@ -3,13 +3,14 @@
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
-	import { Eye, Loader2Icon } from 'lucide-svelte';
+	import { Eye, EyeOff, Loader2Icon } from 'lucide-svelte';
 
 	import { forgotPassword, forgotPasswordSchema } from '..';
 	import { goto } from '$app/navigation';
 
 	import { Input } from '$lib/components/ui/input';
 	import * as Form from '$lib/components/ui/form';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	const forgotPasswordMutation = createMutation({
 		mutationKey: ['forgot-password'],
@@ -43,85 +44,83 @@
 	let showConfirmPassword = false;
 </script>
 
-<form method="POST" use:enhance>
-	<div class="mb-8 text-center">
-		<h1 class="text-2xl font-bold">Forgot Password</h1>
-		<h1 class="text-sm text-neutral-500">Enter your otp and new password</h1>
-	</div>
-	<div class="flex flex-col items-center justify-center gap-3">
-		<Form.Field class="w-full" {form} name="code">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Input {...props} placeholder="Enter your OTP" bind:value={$formData.code} />
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<div class="flex flex-col pb-6">
+	<h1 class="text-2xl font-semibold">Create New Password</h1>
+	<p class="text-muted-foreground text-sm">We sent authentication to</p>
+</div>
 
-		<Form.Field {form} class="w-full" name="password">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Password</Form.Label>
-					<div class="relative">
-						<Input
-							{...props}
-							type={showPassword ? 'text' : 'password'}
-							bind:value={$formData.password}
-						/>
-						<button
-							type="button"
-							class="absolute inset-y-0 right-2 flex items-center"
-							on:click={() => (showPassword = !showPassword)}
-							tabindex="-1"
-						>
-							<Eye
-								class="size-4 transition-colors duration-200 {showPassword
-									? 'text-foreground'
-									: 'text-muted-foreground'}"
-							/>
-						</button>
-					</div>
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<form method="POST" use:enhance class="space-y-4">
+	<Form.Field {form} class="w-full" name="password">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>New Password</Form.Label>
+				<div class="relative">
+					<Input
+						{...props}
+						type={showPassword ? 'text' : 'password'}
+						bind:value={$formData.password}
+						placeholder="Enter New Password"
+						class="rounded-full pr-10"
+					/>
 
-		<Form.Field {form} class="w-full" name="confirmPassword">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Confirm Password</Form.Label>
-					<div class="relative">
-						<Input
-							{...props}
-							type={showConfirmPassword ? 'text' : 'password'}
-							bind:value={$formData.confirmPassword}
-						/>
-						<button
-							type="button"
-							class="absolute inset-y-0 right-2 flex items-center"
-							on:click={() => (showConfirmPassword = !showConfirmPassword)}
-							tabindex="-1"
-						>
-							<Eye
-								class="size-4 transition-colors duration-200 {showConfirmPassword
-									? 'text-foreground'
-									: 'text-muted-foreground'}"
-							/>
-						</button>
-					</div>
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
-	</div>
-	<div class="mt-auto flex w-full flex-1 flex-col space-y-4 py-4">
-		<Form.Button disabled={$forgotPasswordMutation.isPending} class="w-full">
-			{#if $forgotPasswordMutation.isPending}
-				<Loader2Icon class="mr-2 size-4 animate-spin" />
-				Submitting...
-			{:else}
-				Submit
-			{/if}
-		</Form.Button>
-	</div>
+					<button
+						type="button"
+						class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
+						onclick={() => (showPassword = !showPassword)}
+						tabindex="-1"
+					>
+						{#if showPassword}
+							<Eye class="size-4" />
+						{:else}
+							<EyeOff class="size-4" />
+						{/if}
+					</button>
+				</div>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} class="w-full" name="confirmPassword">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Re-enter New Password</Form.Label>
+				<div class="relative">
+					<Input
+						{...props}
+						type={showConfirmPassword ? 'text' : 'password'}
+						bind:value={$formData.confirmPassword}
+						placeholder="Re-enter New Password"
+						class="rounded-full pr-10"
+					/>
+
+					<button
+						type="button"
+						class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
+						onclick={() => (showConfirmPassword = !showConfirmPassword)}
+						tabindex="-1"
+					>
+						{#if showConfirmPassword}
+							<Eye class="size-4" />
+						{:else}
+							<EyeOff class="size-4" />
+						{/if}
+					</button>
+				</div>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Button
+		disabled={$forgotPasswordMutation.isPending}
+		class="w-full rounded-full font-medium text-white"
+	>
+		{#if $forgotPasswordMutation.isPending}
+			<Loader2Icon class="mr-2 size-4 animate-spin" />
+			Submitting...
+		{:else}
+			Next
+		{/if}
+	</Form.Button>
 </form>
