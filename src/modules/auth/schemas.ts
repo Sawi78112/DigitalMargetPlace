@@ -8,16 +8,12 @@ export const loginSchema = z.object({
 
 export type LoginSchema = Infer<typeof loginSchema>;
 
-export const registerSchema = z
-	.object({
-		email: z.string().email('Type your email here'),
-		password: z.string().min(8, 'Password must be at least 8 characters long'),
-		confirmPassword: z.string().optional()
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: 'Passwords do not match',
-		path: ['confirmPassword']
-	});
+export const registerSchema = z.object({
+	fullName: z.string().min(3, 'Type your full name here'),
+	userName: z.string().min(1, 'Type your username here'),
+	email: z.string().email('Please enter a valid email address'),
+	password: z.string().min(8, 'Password must be at least 8 characters long')
+});
 
 export type RegisterSchema = Infer<typeof registerSchema>;
 
