@@ -1,9 +1,22 @@
 <script lang="ts">
-	import { UserRoundIcon } from 'lucide-svelte';
-
 	import { RegisterForm } from '$modules/auth/register-form';
 </script>
 
+<div
+	class="relative container h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
+>
+	<div class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r">
+		<div class="absolute inset-0 bg-[url('/img/dmp-bg.jpg')] bg-cover bg-right bg-no-repeat"></div>
+	</div>
+
+	<div class="flex min-h-screen items-center justify-center">
+		<div class="w-full max-w-md">
+			<RegisterForm />
+		</div>
+	</div>
+</div>
+
+<!-- 
 <div class="relative container mx-auto flex h-screen items-center justify-center">
 	<div class="lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -34,4 +47,4 @@
 			</p>
 		</div>
 	</div>
-</div>
+</div> -->
