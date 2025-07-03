@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CircleAlert, Eye, Loader2Icon } from 'lucide-svelte';
+	import { CircleAlert, Eye, EyeOff, Loader2Icon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { toast } from 'svelte-sonner';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
@@ -53,7 +53,13 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label class="pb-1">Email Address</Form.Label>
-				<Input {...props} type="email" placeholder="Enter Email Address" class="rounded-full" />
+				<Input
+					{...props}
+					type="email"
+					bind:value={$formData.email}
+					placeholder="Enter Email Address"
+					class="rounded-full"
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
@@ -69,19 +75,20 @@
 						type={showPassword ? 'text' : 'password'}
 						bind:value={$formData.password}
 						placeholder="Enter Password"
-						class="rounded-full"
+						class="rounded-full pr-10"
 					/>
+
 					<button
 						type="button"
-						class="absolute inset-y-0 right-2 flex items-center"
-						onclick={() => (showPassword = !showPassword)}
+						class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
+						on:click={() => (showPassword = !showPassword)}
 						tabindex="-1"
 					>
-						<Eye
-							class="size-4 transition-colors duration-200 {showPassword
-								? 'text-foreground'
-								: 'text-muted-foreground'}"
-						/>
+						{#if showPassword}
+							<Eye class="size-4" />
+						{:else}
+							<EyeOff class="size-4" />
+						{/if}
 					</button>
 				</div>
 			{/snippet}
@@ -111,12 +118,12 @@
 		</Alert.Root>
 	{/if}
 
-	<Form.Button class="w-full rounded-full  text-white " disabled={$loginMutation.isPending}>
+	<Form.Button class="w-full rounded-full  text-white" disabled={$loginMutation.isPending}>
 		{#if $loginMutation.isPending}
 			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
 			Logging in...
 		{:else}
-			Next
+			Login
 		{/if}
 	</Form.Button>
 </form>
