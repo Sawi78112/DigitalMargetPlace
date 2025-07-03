@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CircleAlert, Eye, LoaderIcon } from 'lucide-svelte';
+	import { CircleAlert, Eye, EyeOff, Loader2Icon, Camera, UserRoundIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation } from '@tanstack/svelte-query';
@@ -30,9 +30,7 @@
 		resetForm: false,
 		onUpdate({ form }) {
 			if (form.valid) {
-				const { confirmPassword: _, ...data } = form.data;
-
-				$registerMutation.mutate(data);
+				$registerMutation.mutate(form.data);
 			}
 		}
 	});
@@ -40,109 +38,132 @@
 	const { form: formData, enhance } = form;
 
 	let showPassword = false;
-	let showConfirmPassword = false;
 </script>
 
-<form method="POST" use:enhance class="w-full space-y-4">
-	<div class="space-y-4">
-		<Form.Field {form} name="email">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Email</Form.Label>
-					<Input {...props} type="email" bind:value={$formData.email} />
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<div class="flex flex-col pb-6">
+	<h1 class="pb-1 text-2xl font-semibold">Sign Up</h1>
+	<p class="text-muted-foreground text-sm">
+		Please upload your photo and input required informations below
+	</p>
+</div>
 
-		<Form.Field {form} name="password">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Password</Form.Label>
-					<div class="relative">
-						<Input
-							{...props}
-							type={showPassword ? 'text' : 'password'}
-							bind:value={$formData.password}
-						/>
-						<button
-							type="button"
-							class="absolute inset-y-0 right-2 flex items-center"
-							on:click={() => (showPassword = !showPassword)}
-							tabindex="-1"
-						>
-							<Eye
-								class="size-4 transition-colors duration-200 {showPassword
-									? 'text-foreground'
-									: 'text-muted-foreground'}"
-							/>
-						</button>
-					</div>
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+<div class="bg-muted relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
+	<UserRoundIcon class="text-muted-foreground h-8 w-8" />
 
-		<Form.Field {form} name="confirmPassword">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Form.Label>Confirm Password</Form.Label>
-					<div class="relative">
-						<Input
-							{...props}
-							type={showConfirmPassword ? 'text' : 'password'}
-							bind:value={$formData.confirmPassword}
-						/>
-						<button
-							type="button"
-							class="absolute inset-y-0 right-2 flex items-center"
-							on:click={() => (showConfirmPassword = !showConfirmPassword)}
-							tabindex="-1"
-						>
-							<Eye
-								class="size-4 transition-colors duration-200 {showConfirmPassword
-									? 'text-foreground'
-									: 'text-muted-foreground'}"
-							/>
-						</button>
-					</div>
-				{/snippet}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+	<label
+		for="file-upload"
+		class="bg-primary absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-white"
+		title="Upload Photo"
+	>
+		<Camera class="h-4 w-4" />
+	</label>
 
-		{#if $registerMutation.isPaused}
-			<Alert.Root variant="destructive">
-				<CircleAlert class="size-4" />
-				<Alert.Title>You are offline</Alert.Title>
-				<Alert.Description>Please connect to the internet.</Alert.Description>
-			</Alert.Root>
+	<input id="file-upload" type="file" class="hidden" accept="image/*" />
+</div>
+
+<form method="POST" use:enhance class="space-y-4">
+	<Form.Field {form} name="fullName">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label class="pb-1">Full Name</Form.Label>
+				<Input
+					{...props}
+					bind:value={$formData.fullName}
+					placeholder="Enter Full Name"
+					class="rounded-full"
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="userName">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label class="pb-1">Username</Form.Label>
+				<Input
+					{...props}
+					bind:value={$formData.userName}
+					placeholder="Enter Username"
+					class="rounded-full"
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="email">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label class="pb-1">Email Address</Form.Label>
+				<Input
+					{...props}
+					type="email"
+					bind:value={$formData.email}
+					placeholder="Enter Email Address"
+					class="rounded-full"
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} class="w-full" name="password">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Password</Form.Label>
+				<div class="relative">
+					<Input
+						{...props}
+						type={showPassword ? 'text' : 'password'}
+						bind:value={$formData.password}
+						placeholder="Enter Password"
+						class="rounded-full pr-10"
+					/>
+
+					<button
+						type="button"
+						class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
+						onclick={() => (showPassword = !showPassword)}
+						tabindex="-1"
+					>
+						{#if showPassword}
+							<Eye class="size-4" />
+						{:else}
+							<EyeOff class="size-4" />
+						{/if}
+					</button>
+				</div>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	{#if $registerMutation.isPaused}
+		<Alert.Root variant="destructive">
+			<CircleAlert class="size-4" />
+			<Alert.Title>You are offline</Alert.Title>
+			<Alert.Description>Please connect to the internet.</Alert.Description>
+		</Alert.Root>
+	{/if}
+	{#if $registerMutation.isError}
+		<Alert.Root variant="destructive">
+			<CircleAlert class="size-4" />
+			<Alert.Title>Email or password is incorrect</Alert.Title>
+		</Alert.Root>
+	{/if}
+
+	<Form.Button class="w-full rounded-full  text-white" disabled={$registerMutation.isPending}>
+		{#if $registerMutation.isPending}
+			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
+			Signing up...
+		{:else}
+			Next
 		{/if}
-		{#if $registerMutation.isError}
-			<Alert.Root variant="destructive">
-				<CircleAlert class="size-4" />
-				<Alert.Title>Details Incorrect</Alert.Title>
-			</Alert.Root>
-		{/if}
-	</div>
-
-	<Form.Button class="w-full" disabled={$registerMutation.isPending || $registerMutation.isPaused}>
-		{#if $registerMutation.isPending || $registerMutation.isPaused}
-			<LoaderIcon class="mr-1 size-4 animate-spin" />
-		{/if}
-		Register
 	</Form.Button>
 </form>
 
-<div class="relative">
-	<div class="absolute inset-0 flex items-center">
-		<span class="w-full border-t"></span>
-	</div>
-	<div class="relative flex justify-center text-xs uppercase">
-		<span class="bg-background text-muted-foreground px-2"> Or continue with </span>
-	</div>
+<div class="pt-6 text-center text-sm">
+	Already have an account?
+	<Button href="/login" variant="link" class="text-sm font-medium">Sign In</Button>
 </div>
-<Button variant="outline" type="button">
-	<Icons.google class="mr-2 size-4" />
-	Google
-</Button>

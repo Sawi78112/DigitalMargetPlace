@@ -81,7 +81,7 @@
 					<button
 						type="button"
 						class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
-						on:click={() => (showPassword = !showPassword)}
+						onclick={() => (showPassword = !showPassword)}
 						tabindex="-1"
 					>
 						{#if showPassword}

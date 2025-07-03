@@ -62,7 +62,7 @@
 							<button
 								type="button"
 								class="absolute inset-y-0 right-2 flex items-center"
-								on:click={() => (showPassword = !showPassword)}
+								onclick={() => (showPassword = !showPassword)}
 								tabindex="-1"
 							>
 								<Eye
@@ -90,7 +90,7 @@
 							<button
 								type="button"
 								class="absolute inset-y-0 right-2 flex items-center"
-								on:click={() => (showConfirmPassword = !showConfirmPassword)}
+								onclick={() => (showConfirmPassword = !showConfirmPassword)}
 								tabindex="-1"
 							>
 								<Eye
