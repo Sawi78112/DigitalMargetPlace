@@ -9,7 +9,6 @@
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import { Icons } from '$lib/components/icons';
 	import * as Form from '$lib/components/ui/form';
 	import * as Alert from '$lib/components/ui/alert';
 	import { auth } from '$lib/api';
@@ -62,13 +61,13 @@
 </div>
 
 <form method="POST" use:enhance class="space-y-4">
-	<Form.Field {form} name="fullName">
+	<Form.Field {form} name="full_name">
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label class="pb-1">Full Name</Form.Label>
 				<Input
 					{...props}
-					bind:value={$formData.fullName}
+					bind:value={$formData.full_name}
 					placeholder="Enter Full Name"
 					class="rounded-full"
 				/>
@@ -77,13 +76,13 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="userName">
+	<Form.Field {form} name="username">
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label class="pb-1">Username</Form.Label>
 				<Input
 					{...props}
-					bind:value={$formData.userName}
+					bind:value={$formData.username}
 					placeholder="Enter Username"
 					class="rounded-full"
 				/>
