@@ -9,8 +9,8 @@ export const loginSchema = z.object({
 export type LoginSchema = Infer<typeof loginSchema>;
 
 export const registerSchema = z.object({
-	fullName: z.string().min(3, 'Type your full name here'),
-	userName: z.string().min(1, 'Type your username here'),
+	full_name: z.string().min(3, 'Type your full name here'),
+	username: z.string().min(1, 'Type your username here'),
 	email: z.string().email('Please enter a valid email address'),
 	password: z.string().min(8, 'Password must be at least 8 characters long')
 });
@@ -42,7 +42,7 @@ export const otpSchema = z.object({
 export type OtpSchema = Infer<typeof otpSchema>;
 
 export const emailConfirmationSchema = z.object({
-	code: z.string().min(6, {
+	code: z.string().length(6, {
 		message: 'Email Confirmation OTP must be at least 6 characters'
 	})
 });
