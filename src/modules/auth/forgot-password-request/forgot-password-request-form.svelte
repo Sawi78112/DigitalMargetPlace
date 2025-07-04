@@ -16,8 +16,7 @@
 		mutationFn: forgotPasswordRequest,
 		onSuccess: (e) => {
 			toast.success('Password reset otp has been sent to your email');
-			// goto(`/forgot-password?id=${e.id}`);
-			goto(`/forgot-password/otp`);
+			goto(`/forgot-password?id=${e.id}`);
 		},
 		onError: (e) => {
 			if (e.status === 422) {
