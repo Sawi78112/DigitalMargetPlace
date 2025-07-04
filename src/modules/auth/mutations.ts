@@ -47,14 +47,6 @@ export async function forgotPassword(data: Omit<ForgotPasswordSchema, 'confirmPa
 	});
 }
 
-export async function otp(data: OtpSchema) {
-	return await api<Otp>({
-		url: '/otp',
-		method: 'POST',
-		data
-	});
-}
-
 export async function emailConfirmation(data: EmailConfirmationSchema) {
 	return await api<AuthResult>({
 		url: '/email-confirmation',

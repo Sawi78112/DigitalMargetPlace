@@ -25,6 +25,9 @@ export type ForgotPasswordRequestSchema = Infer<typeof forgotPasswordRequestSche
 
 export const forgotPasswordSchema = z
 	.object({
+		code: z.string().length(6, {
+			message: 'Email Confirmation OTP must be at least 6 characters'
+		}),
 		password: z.string().min(8, 'Password must be at least 8 characters long'),
 		confirmPassword: z.string()
 	})
