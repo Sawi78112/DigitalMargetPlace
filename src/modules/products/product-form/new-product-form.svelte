@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CircleAlert, LoaderIcon } from 'lucide-svelte';
-	import { defaults, superForm } from 'sveltekit-superforms';
+	import { defaults, fileProxy, filesProxy, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
@@ -58,6 +58,9 @@
 
 	const { form: formData, enhance } = form;
 
+	const coverPhotoFile = fileProxy(form, 'cover_photo');
+	const productPhotosFile = filesProxy(form, 'product_photos');
+
 	$effect(() => {
 		if (product) {
 			$formData = {
@@ -66,8 +69,8 @@
 				price: product.price,
 				visibility: product.visibility,
 				categories: product.categories ?? [],
-				product_photos: product.product_photos ?? [],
-				cover_photo: product.cover_photo ?? ''
+				product_photos: Array.from($productPhotosFile),
+				cover_photo: $coverPhotoFile[0]
 			};
 		}
 	});
@@ -80,7 +83,7 @@
 	class="grid w-full grid-cols-6 gap-x-6 gap-y-6"
 >
 	<Label>Product Photos</Label>
-	<!-- <Form.Field {form} name="product_photos" class="col-span-6">
+	<Form.Field {form} name="product_photos" class="col-span-6">
 		<Form.Control>
 			<Label
 				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
@@ -90,15 +93,13 @@
 					alt="Upload Icon"
 					class="mx-auto h-20 w-20 text-blue-400"
 				/>
-				<p class="text-sm font-medium">
-					Upload Image <span class="text-gray-500">({$selectedPhotosCount}/10)</span>
-				</p>
+				<p class="text-sm font-medium">Upload Image</p>
 				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
-				<Input type="file" accept="image/*" multiple onchange={productPhotoFileToString} />
+				<Input type="file" accept="image/*" multiple bind:files={$productPhotosFile} />
 			</Label>
 		</Form.Control>
 		<Form.FieldErrors />
-	</Form.Field> -->
+	</Form.Field>
 
 	<Form.Field {form} name="title" class="col-span-4 sm:col-span-2">
 		<Form.Control>
@@ -129,7 +130,7 @@
 	</Form.Field>
 
 	<Label>Cover</Label>
-	<!-- <Form.Field {form} name="cover_photo" class="col-span-6">
+	<Form.Field {form} name="cover_photo" class="col-span-6">
 		<Form.Control>
 			<Label
 				class="hover:bg-muted relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-12 text-center transition"
@@ -141,11 +142,11 @@
 				/>
 				<p class="text-sm font-medium">Upload Cover Photo</p>
 				<p class="mt-1 text-xs text-gray-500">Drag and drop your file here, or click to browse.</p>
-				<Input type="file" accept="image/*" onchange={coverPhotoFileToString} />
+				<Input type="file" accept="image/*" bind:files={$coverPhotoFile} />
 			</Label>
 		</Form.Control>
 		<Form.FieldErrors />
-	</Form.Field> -->
+	</Form.Field>
 
 	<Form.Field {form} name="description" class="col-span-6">
 		<Form.Control>
