@@ -69,7 +69,7 @@
 
 	function handleSubmit(event: Event) {
 		event.preventDefault();
-		if (codeDigits.some((d) => d === '')) {
+		if (codeDigits.includes('')) {
 			toast.error('Please enter all 6 digits.');
 			return;
 		}

@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { CheckIcon } from 'lucide-svelte';
+
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { Check } from 'lucide-svelte';
 </script>
 
 <div class="flex flex-col items-center space-y-6">
 	<div class="bg-muted relative flex h-20 w-20 items-center justify-center rounded-full">
-		<Check class="h-8 w-8 text-green-500" />
+		<CheckIcon class="h-8 w-8 text-green-500" />
 	</div>
 
 	<div class="flex flex-col space-y-2 text-center">

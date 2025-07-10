@@ -3,11 +3,10 @@ import type {
 	ForgotPasswordRequestSchema,
 	ForgotPasswordSchema,
 	LoginSchema,
-	OtpSchema,
 	RegisterSchema
 } from '.';
 import { api } from '$lib/api';
-import type { AuthResult, ForgotPasswordRequestResult, Otp } from '$lib/types';
+import type { AuthResult, ForgotPasswordRequestResult } from '$lib/types';
 
 export async function login(data: LoginSchema): Promise<AuthResult> {
 	return await api<AuthResult>({

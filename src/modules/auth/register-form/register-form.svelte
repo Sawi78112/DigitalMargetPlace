@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { CircleAlert, Eye, EyeOff, Loader2Icon, Camera, UserRoundIcon } from 'lucide-svelte';
+	import {
+		CameraIcon,
+		CircleAlertIcon,
+		EyeIcon,
+		EyeOffIcon,
+		Loader2Icon,
+		UserRoundIcon
+	} from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation } from '@tanstack/svelte-query';
@@ -54,7 +61,7 @@
 		class="bg-primary absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-white"
 		title="Upload Photo"
 	>
-		<Camera class="h-4 w-4" />
+		<CameraIcon class="h-4 w-4" />
 	</label>
 
 	<input id="file-upload" type="file" class="hidden" accept="image/*" />
@@ -127,9 +134,9 @@
 						tabindex="-1"
 					>
 						{#if showPassword}
-							<Eye class="size-4" />
+							<EyeIcon class="size-4" />
 						{:else}
-							<EyeOff class="size-4" />
+							<EyeOffIcon class="size-4" />
 						{/if}
 					</button>
 				</div>
@@ -140,14 +147,14 @@
 
 	{#if $registerMutation.isPaused}
 		<Alert.Root variant="destructive">
-			<CircleAlert class="size-4" />
+			<CircleAlertIcon class="size-4" />
 			<Alert.Title>You are offline</Alert.Title>
 			<Alert.Description>Please connect to the internet.</Alert.Description>
 		</Alert.Root>
 	{/if}
 	{#if $registerMutation.isError}
 		<Alert.Root variant="destructive">
-			<CircleAlert class="size-4" />
+			<CircleAlertIcon class="size-4" />
 			<Alert.Title>Email or password is incorrect</Alert.Title>
 		</Alert.Root>
 	{/if}

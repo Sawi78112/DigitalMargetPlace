@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CircleAlert, Eye, LoaderIcon } from 'lucide-svelte';
+	import { CircleAlertIcon, EyeIcon, LoaderIcon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
@@ -65,7 +65,7 @@
 								onclick={() => (showPassword = !showPassword)}
 								tabindex="-1"
 							>
-								<Eye
+								<EyeIcon
 									class="size-4 transition-colors duration-200 {showPassword
 										? 'text-foreground'
 										: 'text-muted-foreground'}"
@@ -93,7 +93,7 @@
 								onclick={() => (showConfirmPassword = !showConfirmPassword)}
 								tabindex="-1"
 							>
-								<Eye
+								<EyeIcon
 									class="size-4 transition-colors duration-200 {showConfirmPassword
 										? 'text-foreground'
 										: 'text-muted-foreground'}"
@@ -107,14 +107,14 @@
 
 			{#if $updatePasswordMutation.isPaused}
 				<Alert.Root variant="destructive">
-					<CircleAlert class="h-4 w-4" />
+					<CircleAlertIcon class="h-4 w-4" />
 					<Alert.Title>You are offline</Alert.Title>
 					<Alert.Description>Please connect to the internet.</Alert.Description>
 				</Alert.Root>
 			{/if}
 			{#if $updatePasswordMutation.isError}
 				<Alert.Root variant="destructive">
-					<CircleAlert class="h-4 w-4" />
+					<CircleAlertIcon class="h-4 w-4" />
 					<Alert.Title>Something went wrong.</Alert.Title>
 				</Alert.Root>
 			{/if}

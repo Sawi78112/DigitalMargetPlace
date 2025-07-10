@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { CircleAlert, Eye, EyeOff, Loader2Icon } from 'lucide-svelte';
 	import { defaults, superForm } from 'sveltekit-superforms';
-	import { toast } from 'svelte-sonner';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { createMutation } from '@tanstack/svelte-query';
 
