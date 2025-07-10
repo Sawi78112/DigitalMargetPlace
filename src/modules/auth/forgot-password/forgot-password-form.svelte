@@ -7,7 +7,6 @@
 
 	import { forgotPassword, forgotPasswordSchema } from '..';
 	import { goto } from '$app/navigation';
-
 	import { Input } from '$lib/components/ui/input';
 	import * as Form from '$lib/components/ui/form';
 
@@ -41,64 +40,29 @@
 
 	let showPassword = false;
 	let showConfirmPassword = false;
-
-	let codeDigits = ['', '', '', '', '', ''];
-
-	function handlePaste(event: ClipboardEvent) {
-		event.preventDefault();
-		const paste = event.clipboardData?.getData('text') ?? '';
-		const chars = paste.trim().slice(0, 6).split('');
-		for (let i = 0; i < 6; i++) {
-			codeDigits[i] = chars[i] ?? '';
-		}
-	}
-
-	function handleSubmit() {
-		if (codeDigits.some((d) => d === '')) {
-			toast.error('Please enter all 6 digits.');
-			return;
-		}
-		if (!$formData.password || !$formData.confirmPassword) {
-			toast.error('Please enter the password fields.');
-			return;
-		}
-		if ($formData.password !== $formData.confirmPassword) {
-			toast.error("Passwords don't match.");
-			return;
-		}
-		const data = {
-			code: codeDigits.join(''),
-			password: $formData.password
-		};
-
-		$forgotPasswordMutation.mutate(data);
-	}
 </script>
 
 <div class="flex flex-col pb-6">
 	<h1 class="text-2xl font-semibold">Create New Password</h1>
-	<!-- <p class="text-muted-foreground text-sm">We sent authentication to</p> -->
 </div>
 
-<form onsubmit={handleSubmit} class="space-y-4">
-	<Form.Field name="code" {form} class="w-full">
+<form method="POST" use:enhance class="space-y-4">
+	<Form.Field {form} class="w-full" name="code">
 		<Form.Control>
-			<Form.Label>Otp</Form.Label>
-			<div class="flex gap-3">
-				{#each Array(6) as _, i}
-					<input
+			{#snippet children({ props })}
+				<Form.Label>OTP Code</Form.Label>
+				<div class="relative">
+					<Input
+						{...props}
 						type="text"
-						maxlength="1"
-						bind:value={codeDigits[i]}
-						onpaste={handlePaste}
-						class="h-12 w-12 rounded-full border border-gray-300 text-center text-xl focus:ring-2 focus:ring-blue-500"
+						bind:value={$formData.code}
+						placeholder="Enter OTP Code"
+						class="rounded-full pr-10"
 					/>
-				{/each}
-			</div>
+				</div>
+			{/snippet}
 		</Form.Control>
-		<div class="mt-2 text-center">
-			<Form.FieldErrors class="text-xs text-red-500" />
-		</div>
+		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} class="w-full" name="password">
