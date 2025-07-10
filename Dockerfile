@@ -1,16 +1,25 @@
-FROM node:20-alpine
+FROM node:18-alpine
 
+# Install pnpm
+RUN npm install -g pnpm
 
-COPY package.json .
+# Set working directory
+WORKDIR /app
 
-#all folders needed for the build
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-RUN npm i -g pnpm
-RUN pnpm install
-
+# Build the application
 RUN pnpm run build
 
-EXPOSE 5173
+# Expose port
+EXPOSE 5173 
 
-CMD ["node", "build/index.js"]
+# Start the application
+CMD ["node", "build"]
