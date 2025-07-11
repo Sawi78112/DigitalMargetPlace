@@ -92,7 +92,7 @@
 						maxlength="1"
 						bind:value={codeDigits[i]}
 						onpaste={handlePaste}
-						class="h-12 w-12 rounded-full border border-gray-300 text-center text-xl focus:ring-2 focus:ring-blue-500"
+						class="size-10 rounded-full border border-gray-300 text-center text-xl focus:ring-2 focus:ring-blue-500 lg:size-12"
 					/>
 				{/each}
 			</div>
