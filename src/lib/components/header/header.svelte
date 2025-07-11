@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { SearchIcon } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input';
-	import { SearchIcon } from 'lucide-svelte';
 </script>
 
 <div class="flex h-14 items-center gap-x-2 rounded-full bg-white px-2">
@@ -28,7 +30,7 @@
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content class="w-40" align="end">
 			<DropdownMenu.Label>My Account</DropdownMenu.Label>
-			<DropdownMenu.Item>Log out</DropdownMenu.Item>
+			<DropdownMenu.Item onclick={() => goto('/logout')}>Logout</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 </div>
