@@ -15,6 +15,7 @@ type ApiConfig = {
 	data?: unknown;
 	params?: Record<string, unknown>;
 	token?: string;
+	isFormData?: boolean;
 };
 
 // ----------------------------
@@ -22,10 +23,8 @@ type ApiConfig = {
 // ----------------------------
 const client = axios.create({
 	baseURL: PUBLIC_API,
-	timeout: 10000,
-	headers: {
-		'Content-Type': 'application/json'
-	}
+	timeout: 10000
+	// Remove default Content-Type header to allow dynamic setting
 });
 
 // ----------------------------
@@ -36,6 +35,17 @@ client.interceptors.request.use((config) => {
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+
+	// Set Content-Type based on data type
+	if (!config.headers['Content-Type']) {
+		if (config.data instanceof FormData) {
+			// Let the browser set Content-Type for FormData (including boundary)
+			delete config.headers['Content-Type'];
+		} else {
+			config.headers['Content-Type'] = 'application/json';
+		}
+	}
+
 	return config;
 });
 
@@ -71,10 +81,23 @@ client.interceptors.response.use(
 // 5. Core API Function
 // ----------------------------
 export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
-	const { method, url, data, params, token } = config;
+	const { method, url, data, params, token, isFormData } = config;
+
+	// Prepare headers
+	const headers: Record<string, string> = {};
 
 	// Use explicit token if provided
-	const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+	if (token) {
+		headers.Authorization = `Bearer ${token}`;
+	}
+
+	// Set Content-Type based on data type
+	if (data instanceof FormData || isFormData) {
+		// Don't set Content-Type for FormData - let browser handle it
+		// This ensures proper boundary is set for multipart/form-data
+	} else {
+		headers['Content-Type'] = 'application/json';
+	}
 
 	try {
 		const response = await client.request<TResponse>({
@@ -82,7 +105,7 @@ export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
 			url,
 			data,
 			params,
-			headers
+			headers: Object.keys(headers).length > 0 ? headers : undefined
 		});
 
 		return response.data;
@@ -94,7 +117,79 @@ export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
 }
 
 // ----------------------------
-// 6. Auth Utilities
+// 6. Form Data Utilities
+// ----------------------------
+export const formData = {
+	/**
+	 * Create FormData from an object
+	 * Handles nested objects and arrays properly
+	 * @param data - The data object to convert
+	 * @param options - Formatting options
+	 * @param options.arrayFormat - How to format arrays: 'brackets' (key[0]), 'repeat' (key, key), 'comma' (key=val1,val2)
+	 */
+	create: (
+		data: Record<string, unknown>,
+		options: { arrayFormat?: 'brackets' | 'repeat' | 'comma' } = {}
+	): FormData => {
+		const { arrayFormat = 'repeat' } = options;
+		const form = new FormData();
+
+		const appendToForm = (key: string, value: unknown) => {
+			if (value === null || value === undefined) {
+				return;
+			}
+
+			if (value instanceof File || value instanceof Blob) {
+				form.append(key, value);
+			} else if (Array.isArray(value)) {
+				if (arrayFormat === 'brackets') {
+					// Format: categories[0], categories[1]
+					value.forEach((item, index) => {
+						appendToForm(`${key}[${index}]`, item);
+					});
+				} else if (arrayFormat === 'comma') {
+					// Format: categories = "item1,item2,item3"
+					form.append(key, value.join(','));
+				} else {
+					// Format: categories, categories, categories (repeat - most common for backend APIs)
+					value.forEach((item) => {
+						if (item instanceof File || item instanceof Blob) {
+							form.append(key, item);
+						} else {
+							form.append(key, String(item));
+						}
+					});
+				}
+			} else if (typeof value === 'object') {
+				Object.entries(value as Record<string, unknown>).forEach(([nestedKey, nestedValue]) => {
+					appendToForm(`${key}[${nestedKey}]`, nestedValue);
+				});
+			} else {
+				form.append(key, String(value));
+			}
+		};
+
+		Object.entries(data).forEach(([key, value]) => {
+			appendToForm(key, value);
+		});
+
+		return form;
+	},
+
+	/**
+	 * Convert FormData to object for debugging
+	 */
+	toObject: (form: FormData): Record<string, unknown> => {
+		const obj: Record<string, unknown> = {};
+		for (const [key, value] of form.entries()) {
+			obj[key] = value;
+		}
+		return obj;
+	}
+};
+
+// ----------------------------
+// 7. Auth Utilities
 // ----------------------------
 export const auth = {
 	setToken: (token: string, expires?: Date) =>

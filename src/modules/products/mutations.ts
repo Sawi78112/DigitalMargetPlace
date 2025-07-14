@@ -1,12 +1,15 @@
 import type { NewProductSchema, UpdateProductSchema } from '.';
-import { api } from '$lib/api';
+import { api, formData } from '$lib/api';
 import type { Product } from '$lib/types';
 
 export async function createProduct(data: NewProductSchema): Promise<Product> {
+	const formDataPayload = formData.create(data);
+
 	return api<Product>({
 		method: 'POST',
 		url: '/products',
-		data
+		data: formDataPayload,
+		isFormData: true
 	});
 }
 
