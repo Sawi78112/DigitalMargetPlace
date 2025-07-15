@@ -7,9 +7,10 @@
 
 	import { getUserProducts } from '$modules/products';
 	import { DataTable } from '$lib/components/tables';
-	import * as Tabs from '$lib/components/ui/tabs/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import * as Card from '$lib/components/ui/card';
+	import { Button } from '$lib/components/ui/button';
+	import { DashboardHeader } from '$lib/components/header';
 
 	const products = createQuery({
 		queryKey: ['product'],
@@ -18,9 +19,17 @@
 	});
 
 	const sortedProducts = derived(products, ($products) =>
-		[...($products.data ?? [])].sort((a, b) => a.name.localeCompare(b.name))
+		[...($products.data ?? [])].sort((a, b) => a.title.localeCompare(b.title))
+	);
+
+	const description = $derived(
+		$products.data && $products.data.length > 0
+			? `${$products.data.length} Product${$products.data.length > 1 ? 's' : ''}`
+			: 'You have no products yet.'
 	);
 </script>
+
+<DashboardHeader heading="Products" backHref="/settings" {description} />
 
 <Tabs.Root value="products">
 	<div class="w-full">

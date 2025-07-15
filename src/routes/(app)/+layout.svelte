@@ -1,13 +1,18 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { Input } from '$lib/components/ui/input';
 	import { AppSidebar } from '$modules/app/components';
-	import { setCurrentUser } from '$modules/auth/current-user.svelte.js';
+	import { getUserMe, setCurrentUser } from '$modules/auth';
 	import { Header } from '$lib/components/header';
+	import { createQuery } from '@tanstack/svelte-query';
+	import { useCurrentUser } from '$modules/auth/hooks/use-current-user.js';
 
 	let { children, data } = $props();
 
+	const currentUser = useCurrentUser(data.user);
+
 	setCurrentUser(data.user);
+
+	$inspect(data.user);
 </script>
 
 <Sidebar.Provider class="bg-secondary border-r-0">
@@ -15,7 +20,7 @@
 
 	<div class="mx-8 my-4 flex w-full flex-1 flex-col space-y-4">
 		<Header />
-		<main class="h-full flex-1 rounded-xl bg-white p-6">
+		<main class="h-full flex-1 space-y-4 rounded-xl bg-white p-6">
 			{@render children?.()}
 		</main>
 	</div>

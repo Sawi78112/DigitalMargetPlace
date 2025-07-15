@@ -21,7 +21,7 @@
 <div class="space-y-4">
 	<div>
 		<p class="text-muted-foreground text-sm">
-			{product ? product.name : 'PRODUCT'}
+			{product ? product.title : 'PRODUCT'}
 		</p>
 	</div>
 	<Separator />

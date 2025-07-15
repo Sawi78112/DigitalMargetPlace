@@ -1,27 +1,19 @@
 <script lang="ts">
-	// import { createQuery } from '@tanstack/svelte-query';
-
-	// import { ProfileForm, ProfilePasswordForm } from '$modules/profile/profile-form';
-	// import { reactiveQueryArgs } from '$lib/components/svelte-query';
-	// import { getProfileByUserId } from '$modules/profile/queries';
-	// import { getCurrentUser } from '$modules/auth';
-	// import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
+	import { DashboardHeader } from '$lib/components/header';
+	import { useCurrentUser } from '$modules/auth/hooks';
 
-	// const { user } = getCurrentUser();
+	const currentUser = useCurrentUser();
 
-	// let userProfile = createQuery(
-	// 	reactiveQueryArgs(() => ({
-	// 		queryKey: ['user-profile', user.id],
-	// 		queryFn: () => getProfileByUserId()
-	// 	}))
-	// );
-
-	// let profile = $derived($userProfile.data);
-	// let userId = user.id;
+	const traderDeclarationComplete = $derived($currentUser.data?.is_trader !== null);
 </script>
+
+<DashboardHeader
+	heading="Complete your profile"
+	description="Complete your profile by filling in all the necessary details, such as your personal information, preferences, and interests, to help ensure that you get the most personalized experience and connect with others more effectively."
+/>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 	<Card.Root class="bg-gray-100 p-4">
@@ -43,12 +35,16 @@
 	</Card.Root>
 
 	<Card.Root class="bg-gray-100 p-4">
-		<Badge class="mb-2 bg-white text-black">Incomplete</Badge>
+		<Badge class="mb-2 bg-white text-black">
+			{traderDeclarationComplete ? 'Completed' : 'Incomplete'}
+		</Badge>
 		<h3 class="text-base font-semibold">Trader Declaration</h3>
 		<p class="text-muted-foreground mb-4 text-sm">
 			We need to understand if you're operating as Trader on our platform.
 		</p>
-		<Button>Complete Now</Button>
+		<Button disabled={traderDeclarationComplete} href="/settings/trader-declaration">
+			{traderDeclarationComplete ? 'Completed' : 'Complete Now'}
+		</Button>
 	</Card.Root>
 
 	<Card.Root class="bg-gray-100 p-4">
@@ -60,27 +56,3 @@
 		<Button>Complete Now</Button>
 	</Card.Root>
 </div>
-
-<!-- <Tabs.Root value="profile">
-		<Tabs.List>
-			<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-
-			<Tabs.Trigger value="security">Security</Tabs.Trigger>
-		</Tabs.List>
-
-		<Tabs.Content value="profile">
-			<Card.Root>
-				<Card.Content>
-					<ProfileForm {profile} {userId} />
-				</Card.Content>
-			</Card.Root>
-		</Tabs.Content>
-
-		<Tabs.Content value="security">
-			<Card.Root>
-				<Card.Content>
-					<ProfilePasswordForm />
-				</Card.Content>
-			</Card.Root>
-		</Tabs.Content>
-	</Tabs.Root> -->

@@ -27,6 +27,7 @@ export type User = {
 	username: string;
 	email: string;
 	verified_at?: string;
+	is_trader?: boolean;
 	created_at: string;
 	updated_at: string;
 };
