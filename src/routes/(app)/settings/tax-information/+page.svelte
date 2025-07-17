@@ -9,6 +9,7 @@
 	let selectedCountry = '';
 	let agreedToTerms = false;
 	let subscribedToEmails = false;
+	let agreedToCertification = false;
 
 	let currentStep = 1;
 
@@ -17,6 +18,12 @@
 			currentStep = 2;
 		}
 	}
+
+	function handleBack() {
+		currentStep = 1;
+	}
+
+	function handleDone() {}
 </script>
 
 <DashboardHeader
@@ -113,5 +120,78 @@
 				<Button disabled={!agreedToTerms} onclick={handleNext}>Next</Button>
 			</div>
 		</div>
+	</div>
+{/if}
+
+{#if currentStep === 2}
+	<div class="mt-6 space-y-2 rounded-xl bg-gray-100 p-4">
+		<div class="text-lg font-semibold">Certification</div>
+
+		<p>
+			Under penalties of perjury, I declare that I have examined the information on this form and to
+			the best of my knowledge and belief it is true, correct, and complete. I further certify under
+			penalties of perjury that:
+		</p>
+
+		<ul class="list-disc space-y-2 pl-6">
+			<li>
+				I am the individual that is the beneficial owner (or am authorized to sign for the
+				individual that is the beneficial owner) of all the income to which this form relates or am
+				using this form to document myself for chapter 4 purposes;
+			</li>
+			<li>The person named on line 1 of this form is not a U.S. person;</li>
+			<li>
+				The income to which this form relates is:
+				<ul class="list-[lower-alpha] space-y-1 pl-6">
+					<li>
+						not effectively connected with the conduct of a trade or business in the United States;
+					</li>
+					<li>
+						effectively connected but is not subject to tax under an applicable income tax treaty;
+						or
+					</li>
+					<li>the partner's share of a partnership's effectively connected income;</li>
+				</ul>
+			</li>
+			<li>
+				The person named on line 1 of this form is a resident of the treaty country listed on line 9
+				of the form (if any) within the meaning of the income tax treaty between the United States
+				and that country;
+			</li>
+			<li>
+				For broker transactions or barter exchanges, the beneficial owner is an exempt foreign
+				person as defined in the instructions.
+			</li>
+		</ul>
+
+		<p>
+			Furthermore, I authorize this form to be provided to any withholding agent that has control,
+			receipt, or custody of the income of which I am the beneficial owner or any withholding agent
+			that can disburse or make payments of the income of which I am the beneficial owner. I agree
+			that I will submit a new form within 30 days if any certification made on this form becomes
+			incorrect.
+		</p>
+		<p>
+			The Internal Revenue Service does not require your consent to any provisions of this document
+			other than the certifications required to establish your status as a non-U.S. individual and,
+			if applicable, obtain a reduced rate of withholding.
+		</p>
+	</div>
+
+	<div class="mt-6 space-y-2 rounded-xl border p-4">
+		<div class="flex items-start gap-3">
+			<Checkbox id="terms" bind:checked={agreedToCertification} class="mt-0.5" />
+			<Label
+				for="terms"
+				class="text-muted-foreground cursor-pointer text-sm leading-relaxed font-normal"
+			>
+				<div>I have read and acknowledge the certification</div>
+			</Label>
+		</div>
+	</div>
+
+	<div class="flex justify-end gap-4">
+		<Button variant="secondary" onclick={handleBack}>Back</Button>
+		<Button disabled={!agreedToCertification} onclick={handleDone}>Done</Button>
 	</div>
 {/if}
