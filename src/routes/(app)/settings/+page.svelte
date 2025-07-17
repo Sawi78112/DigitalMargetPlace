@@ -22,7 +22,7 @@
 		<p class="text-muted-foreground mb-4 text-sm">
 			Get charged the right amount of tax on your earnings.
 		</p>
-		<Button>Complete Now</Button>
+		<Button href="/settings/tax-information">Complete Now</Button>
 	</Card.Root>
 
 	<Card.Root class="bg-gray-100 p-4">
