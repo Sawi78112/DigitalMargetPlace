@@ -1,4 +1,6 @@
-import { api } from '$lib/api';
+import { api, formData } from '$lib/api';
+import type { TaxInformation } from '$lib/types';
+import type { NewTaxInformationSchema } from './schemas';
 
 type SetUserTraderStatusParams = {
 	isTrader: boolean;
@@ -11,5 +13,13 @@ export async function setUserTraderStatus({ isTrader }: SetUserTraderStatusParam
 		data: {
 			is_trader: isTrader
 		}
+	});
+}
+
+export async function createTaxInformation(data: NewTaxInformationSchema): Promise<TaxInformation> {
+	return api<TaxInformation>({
+		url: '/tax-information',
+		method: 'POST',
+		data
 	});
 }
