@@ -59,3 +59,9 @@ export type Categories = {
 	name: string;
 	id: string;
 };
+
+export type TaxInformation = {
+	country: string;
+	enabled_newsletter?: boolean;
+	acknowledged_certification: boolean;
+};
