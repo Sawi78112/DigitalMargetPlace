@@ -18,6 +18,7 @@
 		<Tabs.List>
 			<Tabs.Trigger value="store">Store</Tabs.Trigger>
 			<Tabs.Trigger value="blog-posts">Blog posts</Tabs.Trigger>
+			<Tabs.Trigger value="domains">Domains</Tabs.Trigger>
 		</Tabs.List>
 	</div>
 
@@ -60,6 +61,28 @@
 					</p>
 
 					<Button href="/store/add-new-blog-post">Add Blog Post</Button>
+				</div>
+			</Card.Content>
+		</Card.Root>
+	</Tabs.Content>
+
+	<Tabs.Content value="domains">
+		<Card.Root>
+			<Card.Content class="space-y-2">
+				<div class="flex flex-col items-center space-y-2 text-center">
+					<Button
+						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
+						href="/store/connect-to-existing-domain"
+					>
+						<Plus class="h-4 w-4" />
+					</Button>
+
+					<h1 class="text-xl">Connect to existing domain</h1>
+					<p class=" pb-4 text-sm text-gray-700">
+						Already Have a Domain? Connect It to Your Site Here
+					</p>
+
+					<Button href="/store/connect-to-existing-domain">Connect</Button>
 				</div>
 			</Card.Content>
 		</Card.Root>
