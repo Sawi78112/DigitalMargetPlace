@@ -22,6 +22,7 @@ export type SubLink = Omit<BaseLink, 'icon'>;
 export const links = [
 	{ title: 'Home', url: '/home', icon: House },
 	{ title: 'Products', url: '/products', icon: Store },
+	{ title: 'Store', url: '/store', icon: ShoppingBag },
 	{ title: 'Collaborators', url: '/collaborators', icon: UsersRound },
 	{ title: 'Checkout', url: '/checkout', icon: ShoppingBag },
 	{ title: 'Emails', url: '/emails', icon: Mail },
