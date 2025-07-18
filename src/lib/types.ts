@@ -55,6 +55,13 @@ export type Product = {
 	product_photos?: Photo[];
 };
 
+export type Blog = Photo & {
+	id: string;
+	title: string;
+	content: string;
+	visibility: string;
+};
+
 export type Categories = {
 	name: string;
 	id: string;
