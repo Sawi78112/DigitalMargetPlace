@@ -17,7 +17,7 @@
 	<div class="w-full">
 		<Tabs.List>
 			<Tabs.Trigger value="store">Store</Tabs.Trigger>
-			<Tabs.Trigger value="blog-posts">Blog posts</Tabs.Trigger>
+			<Tabs.Trigger value="blogs">Blog posts</Tabs.Trigger>
 			<Tabs.Trigger value="domains">Domains</Tabs.Trigger>
 		</Tabs.List>
 	</div>
@@ -44,13 +44,13 @@
 		</Card.Root>
 	</Tabs.Content>
 
-	<Tabs.Content value="blog-posts">
+	<Tabs.Content value="blogs">
 		<Card.Root>
 			<Card.Content class="space-y-2">
 				<div class="flex flex-col items-center space-y-2 text-center">
 					<Button
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
-						href="/store/add-new-blog-post"
+						href="/store/blogs/add"
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -60,7 +60,7 @@
 						Start Creating a New Blog Post to Share Your Insights and Expertise
 					</p>
 
-					<Button href="/store/add-new-blog-post">Add Blog Post</Button>
+					<Button href="/store/blogs/add">Add Blog Post</Button>
 				</div>
 			</Card.Content>
 		</Card.Root>
@@ -72,7 +72,7 @@
 				<div class="flex flex-col items-center space-y-2 text-center">
 					<Button
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
-						href="/store/connect-to-existing-domain"
+						href="/store/domains"
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -82,7 +82,7 @@
 						Already Have a Domain? Connect It to Your Site Here
 					</p>
 
-					<Button href="/store/connect-to-existing-domain">Connect</Button>
+					<Button href="/store/domains">Connect</Button>
 				</div>
 			</Card.Content>
 		</Card.Root>
