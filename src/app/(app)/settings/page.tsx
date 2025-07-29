@@ -26,7 +26,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
-              <Link href="/profile">
+              <Link href={"/profile" as any}>
                 Edit Profile
               </Link>
             </Button>
@@ -45,7 +45,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full" variant="outline">
-              <Link href="/settings/tax-information">
+              <Link href={"/settings/tax-information" as any}>
                 Tax Settings
               </Link>
             </Button>
@@ -64,7 +64,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full" variant="outline">
-              <Link href="/settings/trader-declaration">
+              <Link href={"/settings/trader-declaration" as any}>
                 Trader Settings
               </Link>
             </Button>

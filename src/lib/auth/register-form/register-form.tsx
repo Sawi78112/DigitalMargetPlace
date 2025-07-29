@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { makeRequest, auth } from '@/lib/api'
+import { api, auth } from '@/lib/api'
 import type { AuthResult } from '@/lib/types'
 
 const registerSchema = z.object({
@@ -37,7 +37,7 @@ export function RegisterForm() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterFormData): Promise<AuthResult> => {
-      return makeRequest<AuthResult>({
+      return api<AuthResult>({
         method: 'POST',
         url: '/register',
         data,

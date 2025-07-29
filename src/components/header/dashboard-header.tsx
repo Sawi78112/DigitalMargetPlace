@@ -16,7 +16,7 @@ export function DashboardHeader({ heading, description, backHref }: DashboardHea
     <div className="flex items-center gap-4 mb-6">
       {backHref && (
         <Button variant="ghost" size="icon" asChild>
-          <Link href={backHref}>
+          <Link href={backHref as any}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>

@@ -14,7 +14,7 @@ export default function ProductsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/products/add-new-product">
+          <Link href={"/products/add-new-product" as any}>
             <Plus className="mr-2 h-4 w-4" />
             Add Product
           </Link>
@@ -32,7 +32,7 @@ export default function ProductsPage() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
-              <Link href="/products/add-new-product">
+              <Link href={"/products/add-new-product" as any}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add Your First Product
               </Link>

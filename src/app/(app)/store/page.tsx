@@ -31,7 +31,7 @@ export default function StorePage() {
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
                   asChild
                 >
-                  <Link href="/store/create-store">
+                  <Link href={"/store/create-store" as any}>
                     <Plus className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -42,7 +42,7 @@ export default function StorePage() {
                 </p>
 
                 <Button asChild>
-                  <Link href="/store/create-store">Create</Link>
+                  <Link href={"/store/create-store" as any}>Create</Link>
                 </Button>
               </div>
             </CardContent>
@@ -57,7 +57,7 @@ export default function StorePage() {
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
                   asChild
                 >
-                  <Link href="/store/blogs/add">
+                  <Link href={"/store/blogs/add" as any}>
                     <Plus className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -68,7 +68,7 @@ export default function StorePage() {
                 </p>
 
                 <Button asChild>
-                  <Link href="/store/blogs/add">Add Blog Post</Link>
+                  <Link href={"/store/blogs/add" as any}>Add Blog Post</Link>
                 </Button>
               </div>
             </CardContent>
@@ -83,7 +83,7 @@ export default function StorePage() {
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-700 hover:bg-gray-300"
                   asChild
                 >
-                  <Link href="/store/domains">
+                  <Link href={"/store/domains" as any}>
                     <Plus className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -94,7 +94,7 @@ export default function StorePage() {
                 </p>
 
                 <Button asChild>
-                  <Link href="/store/domains">Connect</Link>
+                  <Link href={"/store/domains" as any}>Connect</Link>
                 </Button>
               </div>
             </CardContent>
