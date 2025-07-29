@@ -117,7 +117,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild>
                       <Link
-                        href={link.url}
+                        href={link.url as any}
                         className={cn(
                           "h-8 flex items-center gap-3 rounded-full px-4 py-2 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600 w-full data-[active=true]:bg-blue-50 data-[active=true]:text-blue-600",
                           isActive && "bg-blue-50 text-blue-600"
@@ -144,7 +144,7 @@ export function AppSidebar() {
                 pathname.startsWith('/settings') && "bg-blue-50 text-blue-600"
               )}
             >
-              <Link href="/settings" className="flex w-full items-center gap-3">
+              <Link href={"/settings" as any} className="flex w-full items-center gap-3">
                 <Settings className="h-5 w-5 flex-shrink-0" />
                 <span className="truncate">Settings</span>
               </Link>
@@ -152,7 +152,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton className="flex items-center gap-3 rounded-md px-4 py-2 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600">
-              <Link href="/help" className="flex w-full items-center gap-3">
+              <Link href={"/help" as any} className="flex w-full items-center gap-3">
                 <BookOpen className="h-5 w-5 flex-shrink-0" />
                 <span className="truncate">Help</span>
               </Link>
