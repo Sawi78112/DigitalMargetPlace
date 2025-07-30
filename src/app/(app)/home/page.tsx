@@ -1,11 +1,13 @@
-import { Search, Grid, Pencil, CheckCircle } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Search, Grid, Pencil, CheckCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function AppHomePage() {
   return (
     <div className="w-full px-6">
       <div className="mt-20 mb-12 w-full text-center">
-        <h1 className="text-3xl font-semibold text-gray-900">Welcome to Gumroad!</h1>
+        <h1 className="text-3xl font-semibold text-gray-900">
+          Welcome to Digital Marketplace!
+        </h1>
       </div>
 
       <div className="relative mb-12 w-full">
@@ -34,5 +36,5 @@ export default function AppHomePage() {
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

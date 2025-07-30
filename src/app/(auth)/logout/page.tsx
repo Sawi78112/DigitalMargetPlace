@@ -1,16 +1,27 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { auth } from '@/lib/api'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { logout } from "@/lib/auth/mutations";
+import { toast } from "sonner";
 
 export default function LogoutPage() {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    auth.clearToken()
-    router.push('/login')
-  }, [router])
+    const performLogout = async () => {
+      try {
+        await logout();
+        toast.success("Logged out successfully");
+        router.push("/login");
+      } catch (error) {
+        console.error("Logout error:", error);
+        router.push("/login");
+      }
+    };
+
+    performLogout();
+  }, [router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -18,5 +29,5 @@ export default function LogoutPage() {
         <h1 className="text-xl">Logging out...</h1>
       </div>
     </div>
-  )
-} 
+  );
+}

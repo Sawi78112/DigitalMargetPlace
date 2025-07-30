@@ -1,1 +1,1 @@
-export { useCurrentUser } from './use-current-user'
+export { useCurrentUser } from "@/lib/hooks/use-supabase-user";

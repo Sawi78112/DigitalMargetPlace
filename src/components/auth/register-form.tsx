@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 import {
   Camera,
   CircleAlert,
@@ -8,19 +8,19 @@ import {
   EyeOff,
   Loader2,
   UserRound,
-} from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import { register } from '@/lib/auth/mutations'
-import { registerSchema, type RegisterSchema } from '@/lib/auth/schemas'
-import { auth } from '@/lib/api'
+import { register } from "@/lib/auth/mutations";
+import { registerSchema, type RegisterSchema } from "@/lib/auth/schemas";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -28,37 +28,43 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import Link from 'next/link'
+} from "@/components/ui/form";
+import Link from "next/link";
 
 export function RegisterForm() {
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      full_name: '',
-      username: '',
-      email: '',
-      password: '',
+      email: "",
+      password: "",
+      full_name: "",
+      username: "",
     },
-  })
+  });
 
   const registerMutation = useMutation({
-    mutationKey: ['register'],
+    mutationKey: ["register"],
     mutationFn: register,
     onSuccess: (data) => {
-      // Match Svelte logic exactly - only get token and token_expiry
-      const { token, token_expiry } = data
-      auth.setToken(token, new Date(token_expiry))
-      router.push('/u/email-confirmation')
+      if (data.session) {
+        toast.success("Registration successful!");
+        router.push("/home");
+      } else {
+        toast.success("Please check your email to confirm your account.");
+        router.push("/login");
+      }
     },
-  })
+    onError: (error) => {
+      toast.error(error.message || "Registration failed. Please try again.");
+    },
+  });
 
   const onSubmit = (data: RegisterSchema) => {
-    registerMutation.mutate(data)
-  }
+    registerMutation.mutate(data);
+  };
 
   return (
     <>
@@ -80,7 +86,12 @@ export function RegisterForm() {
           <Camera className="h-4 w-4" />
         </label>
 
-        <input id="file-upload" type="file" className="hidden" accept="image/*" />
+        <input
+          id="file-upload"
+          type="file"
+          className="hidden"
+          accept="image/*"
+        />
       </div>
 
       <Form {...form}>
@@ -149,7 +160,7 @@ export function RegisterForm() {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter Password"
                       className="rounded-full pr-10 h-12"
                       {...field}
@@ -177,7 +188,9 @@ export function RegisterForm() {
             <Alert variant="destructive">
               <CircleAlert className="size-4" />
               <AlertTitle>You are offline</AlertTitle>
-              <AlertDescription>Please connect to the internet.</AlertDescription>
+              <AlertDescription>
+                Please connect to the internet.
+              </AlertDescription>
             </Alert>
           )}
 
@@ -185,7 +198,9 @@ export function RegisterForm() {
             <Alert variant="destructive">
               <CircleAlert className="size-4" />
               <AlertTitle>Registration failed</AlertTitle>
-              <AlertDescription>Please check your information and try again.</AlertDescription>
+              <AlertDescription>
+                Please check your information and try again.
+              </AlertDescription>
             </Alert>
           )}
 
@@ -200,18 +215,22 @@ export function RegisterForm() {
                 Signing up...
               </>
             ) : (
-              'Next'
+              "Next"
             )}
           </Button>
         </form>
       </Form>
 
       <div className="pt-6 text-center text-sm">
-        Already have an account?{' '}
-        <Button variant="link" className="text-sm font-medium p-0 h-auto" asChild>
+        Already have an account?{" "}
+        <Button
+          variant="link"
+          className="text-sm font-medium p-0 h-auto"
+          asChild
+        >
           <Link href="/login">Sign In</Link>
         </Button>
       </div>
     </>
-  )
-} 
+  );
+}
