@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
+import { useState } from "react";
 
 import { forgotPassword } from "@/lib/auth/mutations";
 import {
   forgotPasswordSchema,
   type ForgotPasswordSchema,
 } from "@/lib/auth/schemas";
+import { useRequireValidSession } from "@/lib/hooks/use-auth-guard";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,10 +26,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export function ForgotPasswordForm() {
+export function ResetPasswordForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Use the new auth guard pattern
+  const { isLoading: authLoading, isValid: hasValidSession } =
+    useRequireValidSession();
 
   const form = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -38,26 +43,45 @@ export function ForgotPasswordForm() {
     },
   });
 
-  const forgotPasswordMutation = useMutation({
-    mutationKey: ["forgot-password"],
+  const resetPasswordMutation = useMutation({
+    mutationKey: ["reset-password"],
     mutationFn: forgotPassword,
     onSuccess: () => {
-      toast.success("Password reset successfully!");
+      toast.success("Password updated successfully!");
       router.push("/login");
     },
     onError: (error: any) => {
-      toast.error(error.message || "An error occurred");
+      toast.error(error.message || "Failed to update password");
     },
   });
 
   const onSubmit = (data: ForgotPasswordSchema) => {
-    forgotPasswordMutation.mutate(data);
+    resetPasswordMutation.mutate(data);
   };
+
+  // Show loading while checking session
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="text-xl">Verifying session...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  // If session is invalid, don't render form (middleware will redirect)
+  if (!hasValidSession) {
+    return null;
+  }
 
   return (
     <>
       <div className="flex flex-col pb-6">
-        <h1 className="text-2xl font-semibold">Create New Password</h1>
+        <h1 className="text-2xl font-semibold">Reset Password</h1>
+        <p className="text-muted-foreground text-sm">
+          Enter your new password below
+        </p>
       </div>
 
       <Form {...form}>
@@ -72,7 +96,7 @@ export function ForgotPasswordForm() {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter New Password"
+                      placeholder="Enter new password"
                       className="rounded-full pr-10"
                       {...field}
                     />
@@ -100,12 +124,12 @@ export function ForgotPasswordForm() {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Re-enter New Password</FormLabel>
+                <FormLabel>Confirm New Password</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Re-enter New Password"
+                      placeholder="Confirm new password"
                       className="rounded-full pr-10"
                       {...field}
                     />
@@ -132,16 +156,16 @@ export function ForgotPasswordForm() {
 
           <Button
             type="submit"
-            className="w-full rounded-full font-medium text-white"
-            disabled={forgotPasswordMutation.isPending}
+            disabled={resetPasswordMutation.isPending}
+            className="w-full rounded-full"
           >
-            {forgotPasswordMutation.isPending ? (
+            {resetPasswordMutation.isPending ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
-                Submitting...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Updating Password...
               </>
             ) : (
-              "Next"
+              "Update Password"
             )}
           </Button>
         </form>

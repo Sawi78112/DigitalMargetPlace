@@ -3,72 +3,174 @@ import type {
   ForgotPasswordRequestSchema,
   ForgotPasswordSchema,
   LoginSchema,
-  RegisterSchema
-} from './schemas'
-import { api } from '@/lib/api'
+  RegisterSchema,
+} from "./schemas";
+import { createClient } from "@/lib/supabase/client";
+import type { AuthResponse, User } from "@supabase/supabase-js";
 
-// Match Svelte types exactly - AuthResult only has token and token_expiry
+// Supabase auth result types
 export interface AuthResult {
-  token: string
-  token_expiry: string
+  user: User | null;
+  session: any;
 }
 
 export interface ForgotPasswordRequestResult {
-  message: string
-  id: string
+  message: string;
 }
 
 export async function login(data: LoginSchema): Promise<AuthResult> {
-  return await api<AuthResult>({
-    url: '/login',
-    method: 'POST',
-    data
-  })
+  const supabase = createClient();
+
+  const { data: authData, error } = await supabase.auth.signInWithPassword({
+    email: data.email,
+    password: data.password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    user: authData.user,
+    session: authData.session,
+  };
 }
 
 export async function register(data: RegisterSchema): Promise<AuthResult> {
-  return await api<AuthResult>({
-    url: '/register',
-    method: 'POST',
-    data
-  })
+  const supabase = createClient();
+
+  const { data: authData, error } = await supabase.auth.signUp({
+    email: data.email,
+    password: data.password,
+    options: {
+      data: {
+        full_name: data.full_name,
+        username: data.username,
+      },
+      emailRedirectTo: `${window.location.origin}/auth/confirm`,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    user: authData.user,
+    session: authData.session,
+  };
 }
 
-export async function forgotPasswordRequest(data: ForgotPasswordRequestSchema): Promise<ForgotPasswordRequestResult> {
-  return await api<ForgotPasswordRequestResult>({
-    url: '/forgot-password/request',
-    method: 'POST',
-    data
-  })
+// Request password reset email
+export async function forgotPasswordRequest(
+  data: ForgotPasswordRequestSchema
+): Promise<ForgotPasswordRequestResult> {
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+    redirectTo: `${window.location.origin}/forgot-password/reset`,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    message: "Password reset email sent. Please check your inbox.",
+  };
 }
 
-export async function forgotPassword(data: Omit<ForgotPasswordSchema, 'confirmPassword'>): Promise<void> {
-  const searchParams = new URLSearchParams(window.location.search)
-  const id = searchParams.get('id')
+// Update password (used in reset password flow)
+export async function forgotPassword(
+  data: ForgotPasswordSchema
+): Promise<void> {
+  const supabase = createClient();
 
-  return await api({
-    url: '/forgot-password',
-    method: 'POST',
-    data: {
-      ...data,
-      id
+  const { error } = await supabase.auth.updateUser({
+    password: data.password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Verify email confirmation with OTP code
+export async function emailConfirmation(
+  data: EmailConfirmationSchema
+): Promise<AuthResult> {
+  const supabase = createClient();
+
+  // Get the user's email from current session
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user?.email) {
+    throw new Error("No user email found");
+  }
+
+  const { data: authData, error } = await supabase.auth.verifyOtp({
+    email: user.email,
+    token: data.code,
+    type: "email",
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    user: authData.user,
+    session: authData.session,
+  };
+}
+
+// Request new email confirmation (resend confirmation email)
+export async function emailConfirmationRequest(
+  email?: string
+): Promise<{ message: string }> {
+  const supabase = createClient();
+
+  let userEmail = email;
+
+  // If no email provided, get from current user
+  if (!userEmail) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user?.email) {
+      throw new Error("No user email found");
     }
-  })
+
+    userEmail = user.email;
+  }
+
+  // Resend confirmation email
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email: userEmail,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/confirm`,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    message: "Confirmation email sent. Please check your inbox.",
+  };
 }
 
-export async function emailConfirmation(data: EmailConfirmationSchema): Promise<AuthResult> {
-  return await api<AuthResult>({
-    url: '/email-confirmation',
-    method: 'POST',
-    data: {
-      ...data
-    }
-  })
-}
+export async function logout(): Promise<void> {
+  const supabase = createClient();
 
-export async function emailConfirmationRequest(): Promise<AuthResult> {
-  return await api<AuthResult>({
-    url: '/email-confirmation/request',
-    method: 'POST'
-  })
-} 
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { CircleAlert, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+import { useState } from "react";
+import { CircleAlert, Eye, EyeOff, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import { login } from '@/lib/auth/mutations'
-import { loginSchema, type LoginSchema } from '@/lib/auth/schemas'
-import { auth } from '@/lib/api'
+import { login } from "@/lib/auth/mutations";
+import { loginSchema, type LoginSchema } from "@/lib/auth/schemas";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -23,36 +23,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Icons } from '@/components/icons'
-import Link from 'next/link'
+} from "@/components/ui/form";
+import { Icons } from "@/components/icons";
+import Link from "next/link";
 
 export function LoginForm() {
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
-  })
+  });
 
   const loginMutation = useMutation({
-    mutationKey: ['login'],
+    mutationKey: ["login"],
     mutationFn: login,
     onSuccess: (data) => {
-      // Match Svelte logic exactly - only get token and token_expiry
-      const { token, token_expiry } = data
-      auth.setToken(token, new Date(token_expiry))
-      router.push('/home')
+      if (data.session) {
+        toast.success("Login successful!");
+        router.push("/home");
+      } else {
+        toast.error("Please check your email to confirm your account.");
+      }
     },
-  })
+    onError: (error) => {
+      toast.error(error.message || "Login failed. Please try again.");
+    },
+  });
 
   const onSubmit = (data: LoginSchema) => {
-    loginMutation.mutate(data)
-  }
+    loginMutation.mutate(data);
+  };
 
   return (
     <>
@@ -91,7 +96,7 @@ export function LoginForm() {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter Password"
                       className="rounded-full pr-10"
                       {...field}
@@ -129,7 +134,9 @@ export function LoginForm() {
             <Alert variant="destructive">
               <CircleAlert className="size-4" />
               <AlertTitle>You are offline</AlertTitle>
-              <AlertDescription>Please connect to the internet.</AlertDescription>
+              <AlertDescription>
+                Please connect to the internet.
+              </AlertDescription>
             </Alert>
           )}
 
@@ -151,7 +158,7 @@ export function LoginForm() {
                 Logging in...
               </>
             ) : (
-              'Login'
+              "Login"
             )}
           </Button>
         </form>
@@ -162,7 +169,9 @@ export function LoginForm() {
           <span className="w-full border-t"></span>
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background text-muted-foreground px-2">Or Register with</span>
+          <span className="bg-background text-muted-foreground px-2">
+            Or Register with
+          </span>
         </div>
       </div>
 
@@ -178,11 +187,15 @@ export function LoginForm() {
       </div>
 
       <div className="pt-6 text-center text-sm">
-        Don't have an account?{' '}
-        <Button variant="link" className="text-sm font-medium p-0 h-auto" asChild>
+        Don't have an account?{" "}
+        <Button
+          variant="link"
+          className="text-sm font-medium p-0 h-auto"
+          asChild
+        >
           <Link href="/register">Sign Up</Link>
         </Button>
       </div>
     </>
-  )
-} 
+  );
+}

@@ -1,17 +1,20 @@
-'use client'
+"use client";
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
-import { forgotPasswordRequest } from '@/lib/auth/mutations'
-import { forgotPasswordRequestSchema, type ForgotPasswordRequestSchema } from '@/lib/auth/schemas'
+import { forgotPasswordRequest } from "@/lib/auth/mutations";
+import {
+  forgotPasswordRequestSchema,
+  type ForgotPasswordRequestSchema,
+} from "@/lib/auth/schemas";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,37 +22,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+} from "@/components/ui/form";
 
 export function ForgotPasswordRequestForm() {
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<ForgotPasswordRequestSchema>({
     resolver: zodResolver(forgotPasswordRequestSchema),
     defaultValues: {
-      email: '',
+      email: "",
     },
-  })
+  });
 
   const forgotPasswordRequestMutation = useMutation({
-    mutationKey: ['forgot-password-request'],
+    mutationKey: ["forgot-password-request"],
     mutationFn: forgotPasswordRequest,
     onSuccess: (data) => {
-      toast.success('Password reset otp has been sent to your email')
-      window.location.href = `/forgot-password?id=${data.id}`
+      toast.success("Password reset email has been sent to your email");
+      // Don't redirect, just show success message
     },
     onError: (error: any) => {
-      if (error.status === 422) {
-        toast.error('Email does not exists')
-        return
-      }
-      toast.error(error.message || 'An error occurred')
+      toast.error(error.message || "Failed to send reset email");
     },
-  })
+  });
 
   const onSubmit = (data: ForgotPasswordRequestSchema) => {
-    forgotPasswordRequestMutation.mutate(data)
-  }
+    forgotPasswordRequestMutation.mutate(data);
+  };
 
   return (
     <>
@@ -92,11 +91,11 @@ export function ForgotPasswordRequestForm() {
                 Submitting...
               </>
             ) : (
-              'Submit'
+              "Submit"
             )}
           </Button>
         </form>
       </Form>
     </>
-  )
-} 
+  );
+}
