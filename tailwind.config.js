@@ -16,8 +16,10 @@ const config = {
         "2xl": "1400px",
       },
     },
-    extend: {
+    extend: { 
       colors: {
+        grayCustom1: "#707070",
+        grayCustom: "#292929",
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
@@ -82,6 +84,9 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    fontFamily: {
+      jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+  },
   },
   plugins: [
     require("tailwindcss-animate"),
