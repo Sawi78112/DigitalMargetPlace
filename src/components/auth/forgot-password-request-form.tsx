@@ -53,8 +53,10 @@ export function ForgotPasswordRequestForm() {
   return (
     <>
       <div className="flex flex-col pb-6">
-        <h1 className="text-2xl font-semibold">Forgot Password</h1>
-        <p className="text-muted-foreground text-sm">
+        <h1 className="text-2xl font-semibold text-grayCustom">
+          Forgot Password
+        </h1>
+        <p className="text-grayCustom1 text-sm">
           Please input your email address below to request a reset password link
         </p>
       </div>
@@ -66,12 +68,14 @@ export function ForgotPasswordRequestForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="pb-1">Email Address</FormLabel>
+                <FormLabel className="pb-1 text-grayCustom">
+                  Email Address
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="email"
                     placeholder="Enter Email Address"
-                    className="rounded-full"
+                    className="rounded-full h-12"
                     {...field}
                   />
                 </FormControl>
@@ -82,7 +86,7 @@ export function ForgotPasswordRequestForm() {
 
           <Button
             type="submit"
-            className="w-full rounded-full text-white"
+            className="w-full rounded-full text-white bg-gradient-to-r from-[#0EBCE8] to-[#005FBD] h-12"
             disabled={forgotPasswordRequestMutation.isPending}
           >
             {forgotPasswordRequestMutation.isPending ? (

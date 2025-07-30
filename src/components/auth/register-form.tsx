@@ -69,8 +69,8 @@ export function RegisterForm() {
   return (
     <>
       <div className="flex flex-col pb-6">
-        <h1 className="pb-1 text-2xl font-semibold">Sign Up</h1>
-        <p className="text-muted-foreground text-sm">
+        <h1 className="pb-1 text-[20px] text-grayCustom font-semibold">Sign Up</h1>
+        <p className="text-grayCustom1 text-sm">
           Please upload your photo and input required informations below
         </p>
       </div>
@@ -80,7 +80,7 @@ export function RegisterForm() {
 
         <label
           htmlFor="file-upload"
-          className="bg-primary absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-white"
+          className="absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-white bg-gradient-to-r from-[#0EBCE8] to-[#005FBD]"
           title="Upload Photo"
         >
           <Camera className="h-4 w-4" />
@@ -101,11 +101,11 @@ export function RegisterForm() {
             name="full_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="pb-1">Full Name</FormLabel>
+                <FormLabel className="pb-1 text-grayCustom">Full Name</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter Full Name"
-                    className="rounded-full"
+                    className="rounded-full h-12"
                     {...field}
                   />
                 </FormControl>
@@ -119,11 +119,11 @@ export function RegisterForm() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="pb-1">Username</FormLabel>
+                <FormLabel className="pb-1 text-grayCustom">Username</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter Username"
-                    className="rounded-full"
+                    className="rounded-full h-12"
                     {...field}
                   />
                 </FormControl>
@@ -137,12 +137,12 @@ export function RegisterForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="pb-1">Email Address</FormLabel>
+                <FormLabel className="pb-1 text-grayCustom">Email Address</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
                     placeholder="Enter Email Address"
-                    className="rounded-full"
+                    className="rounded-full h-12"
                     {...field}
                   />
                 </FormControl>
@@ -156,13 +156,13 @@ export function RegisterForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="text-grayCustom">Password</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter Password"
-                      className="rounded-full pr-10"
+                      className="rounded-full pr-10 h-12"
                       {...field}
                     />
                     <button
@@ -206,7 +206,7 @@ export function RegisterForm() {
 
           <Button
             type="submit"
-            className="w-full rounded-full text-white"
+            className="w-full rounded-full text-white bg-gradient-to-r from-[#0EBCE8] to-[#005FBD] h-12"
             disabled={registerMutation.isPending}
           >
             {registerMutation.isPending ? (

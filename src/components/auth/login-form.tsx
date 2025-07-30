@@ -62,8 +62,8 @@ export function LoginForm() {
   return (
     <>
       <div className="flex flex-col pb-6">
-        <h1 className="text-2xl font-semibold">Sign In</h1>
-        <p className="text-muted-foreground text-sm">Welcome back!</p>
+        <h1 className="text-2xl font-semibold text-grayCustom">Sign In</h1>
+        <p className="text-grayCustom1 text-sm">Welcome back!</p>
       </div>
 
       <Form {...form}>
@@ -73,12 +73,14 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="pb-1">Email Address</FormLabel>
+                <FormLabel className="pb-1 text-grayCustom">
+                  Email Address
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="email"
                     placeholder="Enter Email Address"
-                    className="rounded-full"
+                    className="rounded-full h-12"
                     {...field}
                   />
                 </FormControl>
@@ -92,13 +94,13 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="text-grayCustom">Password</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter Password"
-                      className="rounded-full pr-10"
+                      className="rounded-full pr-10 h-12"
                       {...field}
                     />
                     <button
@@ -122,11 +124,16 @@ export function LoginForm() {
 
           <div className="flex items-center justify-between text-sm">
             <Label className="flex items-center space-x-2">
-              <Checkbox id="remember" />
-              <span>Remember Me</span>
+              <Checkbox id="remember" className="border-[#E7E7E7]" />
+              <span className="text-grayCustom1">Remember Me</span>
             </Label>
             <Button variant="link" className="text-sm p-0 h-auto" asChild>
-              <Link href="/forgot-password/request">Forgot Password?</Link>
+              <Link
+                href="/forgot-password/request"
+                className="bg-gradient-to-r from-[#0EBCE8] to-[#005FBD] bg-clip-text text-transparent"
+              >
+                Forgot Password?
+              </Link>
             </Button>
           </div>
 
@@ -149,7 +156,7 @@ export function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full rounded-full text-white"
+            className="w-full rounded-full text-white bg-gradient-to-r from-[#0EBCE8] to-[#005FBD] h-12"
             disabled={loginMutation.isPending}
           >
             {loginMutation.isPending ? (
@@ -176,12 +183,20 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-2">
-        <Button variant="outline" type="button" className="w-full rounded-full">
-          <Icons.google className="mr-2 size-4" />
+        <Button
+          variant="outline"
+          type="button"
+          className="w-full relative rounded-full h-[42px] text-grayCustom1 justify-center"
+        >
+          <Icons.google className="absolute left-4 top-1/2 -translate-y-1/2 size-4" />
           Sign Up with Google
         </Button>
-        <Button variant="outline" type="button" className="w-full rounded-full">
-          <Icons.apple className="mr-2 size-4" />
+        <Button
+          variant="outline"
+          type="button"
+          className="w-full relative rounded-full h-[42px] text-grayCustom1 justify-center"
+        >
+          <Icons.apple className="absolute left-4 top-1/2 -translate-y-1/2 size-4" />
           Sign Up with Apple
         </Button>
       </div>
