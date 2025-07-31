@@ -1,4 +1,3 @@
-// Authentication Higher-Order Components
 export {
   withAuth,
   withRequiredAuth,

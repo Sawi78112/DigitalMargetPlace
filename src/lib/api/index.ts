@@ -1,11 +1,12 @@
 // src/lib/api.ts
-import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
+import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = process.env.NODE_ENV !== "production";
 
 // Use real API from environment variable - match Svelte exactly
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 // Real authentication - no mock
 const MOCK_AUTH = false;
@@ -28,7 +29,7 @@ export interface User {
 }
 
 type ApiConfig = {
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   data?: unknown;
   params?: Record<string, unknown>;
@@ -41,7 +42,7 @@ type ApiConfig = {
 // ----------------------------
 const client = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000
+  timeout: 10000,
   // Remove default Content-Type header to allow dynamic setting
 });
 
@@ -49,18 +50,18 @@ const client = axios.create({
 // 3. Request Interceptor (Auth)
 // ----------------------------
 client.interceptors.request.use((config) => {
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
   // Set Content-Type based on data type
-  if (!config.headers['Content-Type']) {
+  if (!config.headers["Content-Type"]) {
     if (config.data instanceof FormData) {
       // Let the browser set Content-Type for FormData (including boundary)
-      delete config.headers['Content-Type'];
+      delete config.headers["Content-Type"];
     } else {
-      config.headers['Content-Type'] = 'application/json';
+      config.headers["Content-Type"] = "application/json";
     }
   }
 
@@ -75,7 +76,7 @@ client.interceptors.response.use(
   (error: AxiosError) => {
     // Handle 401 Unauthorized
     if (error.response?.status === 401) {
-      Cookies.remove('token');
+      Cookies.remove("token");
     }
 
     // Transform to ApiError format
@@ -83,7 +84,7 @@ client.interceptors.response.use(
       message: error.message,
       status: error.response?.status || 0,
       errors: [],
-      fieldErrors: {}
+      fieldErrors: {},
     };
 
     if (error.response?.data) {
@@ -116,7 +117,7 @@ export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
     // Don't set Content-Type for FormData - let browser handle it
     // This ensures proper boundary is set for multipart/form-data
   } else {
-    headers['Content-Type'] = 'application/json';
+    headers["Content-Type"] = "application/json";
   }
 
   try {
@@ -125,7 +126,7 @@ export async function api<TResponse>(config: ApiConfig): Promise<TResponse> {
       url,
       data,
       params,
-      headers: Object.keys(headers).length > 0 ? headers : undefined
+      headers: Object.keys(headers).length > 0 ? headers : undefined,
     });
 
     return response.data;
@@ -148,9 +149,9 @@ export const formData = {
    */
   create: (
     data: Record<string, unknown>,
-    options: { arrayFormat?: 'brackets' | 'repeat' | 'comma' } = {}
+    options: { arrayFormat?: "brackets" | "repeat" | "comma" } = {}
   ): FormData => {
-    const { arrayFormat = 'repeat' } = options;
+    const { arrayFormat = "repeat" } = options;
     const form = new FormData();
 
     const appendToForm = (key: string, value: unknown) => {
@@ -161,16 +162,15 @@ export const formData = {
       if (value instanceof File || value instanceof Blob) {
         form.append(key, value);
       } else if (Array.isArray(value)) {
-        if (arrayFormat === 'brackets') {
+        if (arrayFormat === "brackets") {
           // Format: categories[0], categories[1]
           value.forEach((item, index) => {
             appendToForm(`${key}[${index}]`, item);
           });
-        } else if (arrayFormat === 'comma') {
+        } else if (arrayFormat === "comma") {
           // Format: categories = "item1,item2,item3"
-          form.append(key, value.join(','));
+          form.append(key, value.join(","));
         } else {
-          // Format: categories, categories, categories (repeat - most common for backend APIs)
           value.forEach((item) => {
             if (item instanceof File || item instanceof Blob) {
               form.append(key, item);
@@ -179,10 +179,12 @@ export const formData = {
             }
           });
         }
-      } else if (typeof value === 'object') {
-        Object.entries(value as Record<string, unknown>).forEach(([nestedKey, nestedValue]) => {
-          appendToForm(`${key}[${nestedKey}]`, nestedValue);
-        });
+      } else if (typeof value === "object") {
+        Object.entries(value as Record<string, unknown>).forEach(
+          ([nestedKey, nestedValue]) => {
+            appendToForm(`${key}[${nestedKey}]`, nestedValue);
+          }
+        );
       } else {
         form.append(key, String(value));
       }
@@ -204,7 +206,7 @@ export const formData = {
       obj[key] = value;
     }
     return obj;
-  }
+  },
 };
 
 // ----------------------------
@@ -212,14 +214,14 @@ export const formData = {
 // ----------------------------
 export const auth = {
   setToken: (token: string, expires?: Date) =>
-    Cookies.set('token', token, {
+    Cookies.set("token", token, {
       secure: !dev,
-      sameSite: 'strict',
+      sameSite: "strict",
       httpOnly: false,
-      expires
+      expires,
     }),
-  getToken: () => Cookies.get('token'),
-  clearToken: () => Cookies.remove('token')
+  getToken: () => Cookies.get("token"),
+  clearToken: () => Cookies.remove("token"),
 };
 
 // ----------------------------
@@ -227,7 +229,7 @@ export const auth = {
 // ----------------------------
 export async function getUserMe(): Promise<User> {
   return await api<User>({
-    url: '/users/me',
-    method: 'GET'
+    url: "/users/me",
+    method: "GET",
   });
 }
