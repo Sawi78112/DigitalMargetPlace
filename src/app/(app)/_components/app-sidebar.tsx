@@ -25,9 +25,13 @@ import {
   TrendingUp,
   Library,
   Settings,
-  BookOpen
+  BookOpen,
+  Shield,
+  Mic,
+  Megaphone
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { url } from 'inspector'
 
 const links = [
   {
@@ -36,9 +40,19 @@ const links = [
     icon: Home,
   },
   {
+    title: 'Security',
+    url: '/security',
+    icon: Shield,
+  },
+  {
     title: 'Products', 
     url: '/products',
     icon: Store,
+  },
+  {
+    title: 'Marketing',
+    url: '/marketing',
+    icon: Megaphone,
   },
   {
     title: 'Store',
